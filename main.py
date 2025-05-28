@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Tk, Label, Entry, Button, StringVar
 from functools import partial
 from functions import login
 from open_main_window import open_main_window 
