@@ -2,6 +2,7 @@ from tkinter import Tk, Label, Entry, Button, StringVar
 from functools import partial
 from functions import login
 from open_main_window import open_main_window 
+import customtkinter as ctk
 
 def login_and_open_main(user_var, pass_var, success_label, root):
     username = user_var.get()
@@ -15,28 +16,32 @@ def login_and_open_main(user_var, pass_var, success_label, root):
     else:
         print("Login failed!")
 
-root = Tk()
-root.geometry("300x200")
-titlelabel = Label(root, text="Please Enter User and Password")
-SuccessLabel = Label(root)
+ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("blue")
 
-user_var = StringVar()
-USER = Entry(root, textvariable=user_var)
+root = ctk.CTk()
+root.geometry("300x250")
+titlelabel = ctk.CTkLabel(root, text="Please Enter User and Password")
+SuccessLabel = ctk.CTkLabel(root, text="")
+
+user_var = ctk.StringVar()
+USER = ctk.CTkEntry(root, textvariable=user_var)
 user_var.set('')
 
-pass_var = StringVar()
-PASS = Entry(root, textvariable=pass_var, show="*")
+pass_var = ctk.StringVar()
+PASS = ctk.CTkEntry(root, textvariable=pass_var, show="*")
 pass_var.set('')
 
-LogButton = Button(root, text="Login", command=partial(login_and_open_main, user_var, pass_var, SuccessLabel, root), bg="green")
-ExitButton = Button(root, text="Close", command=root.quit, bg="red")
+LogButton = ctk.CTkButton(root, text="Login", command=partial(login_and_open_main, user_var, pass_var, SuccessLabel, root), fg_color="green", hover_color="#006400")
+ExitButton = ctk.CTkButton(root, text="Close", command=root.quit, fg_color="red", hover_color="#8B0000")
 
 titlelabel.pack()
 SuccessLabel.pack()
-USER.pack()
-PASS.pack()
-LogButton.place(x=100, y=100, height=25, width=100)
-ExitButton.place(x=100, y=130, height=25, width=100)
+titlelabel.pack(pady=(10, 0))
+USER.pack(pady=5)
+PASS.pack(pady=5)
+LogButton.pack(pady=(20,5))
+ExitButton.pack(pady=5)
 root.title("Login")
 root.resizable(False, False)
 root.mainloop()
