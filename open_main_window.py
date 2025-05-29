@@ -1,7 +1,38 @@
 from functools import partial
 from tkinter import Label, Entry, Button, StringVar, Frame, BOTH, Y
-from register import register, reset_form
+from register import register
 from dbfunc import fetch_student_data  
+
+
+def reset_form(user_var, pass_var):
+    user_var.set("")
+    pass_var.set("")
+
+
+def reset_form2(student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var):
+        student_name_var.set("")
+        student_birthday_var.set("")
+        student_phone_var.set("")
+        student_email_var.set("")
+        student_address_var.set("")
+        student_class_var .set("")
+
+
+
+def reset_form3(student_id_var, student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var):
+    student_id_var.set("")
+    student_name_var.set("")
+    student_birthday_var.set("")
+    student_phone_var.set("")
+    student_email_var.set("")
+    student_class_var.set("")
+    student_address_var.set("")
+
+
+def reset_form4(student_id_var, student_grade1, student_grade2):
+    student_id_var.set("")
+    student_grade2.set("")
+    student_grade1.set("")
 
 
 def open_main_window(root):
@@ -49,7 +80,7 @@ def open_main_window(root):
         register_button = Button(right_frame, text="Register", command=partial(register, username_entry, password_entry, SuccessLabel), bg="green", fg="black")
         register_button.pack(pady=10)
 
-        reset_button = Button(right_frame, text="Reset", command=partial(reset_form, username_entry, password_entry), bg="red", fg="black")
+        reset_button = Button(right_frame, text="Reset", command=partial(reset_form, username_var, password_var), bg="red", fg="black")
         reset_button.pack(pady=10)
 
     def open_student_register_window():
@@ -96,12 +127,12 @@ def open_main_window(root):
         student_class_entry.grid(row=6, column=3, padx=5, pady=5)
 
         
-        register_button = Button(right_frame, text="Register Student", command=partial(), bg="green", fg="black")
-        register_button.grid(row=16, column=0, columnspan=8, pady=10)
+        register_student_button = Button(right_frame, text="Register Student", bg="green", fg="black")
+        register_student_button.grid(row=10, column=2, columnspan=4, pady=10)
 
 
-        reset_button = Button(right_frame, text="Reset", command=partial(reset_form, student_name_entry, student_birthday_entry, student_phone_entry, student_email_entry, student_address_entry, student_class_entry), bg="red", fg="black")
-        reset_button.grid(row=17, column=4, columnspan=8, pady=10)
+        reset_stu_button = Button(right_frame, text="Reset", command=partial(reset_form2, student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var), bg="red", fg="black")
+        reset_stu_button.grid(row=12, column=2, columnspan=4, pady=10)
         
 
     def open_usi_window():
@@ -167,11 +198,11 @@ def open_main_window(root):
 
 
 
-        register_button = Button(right_frame, text="Update Student Information", command=partial(), bg="green", fg="black")
+        register_button = Button(right_frame, text="Update Student Information", bg="green", fg="black")
         register_button.grid(row=16, column=0, columnspan=8, pady=10)
 
 
-        reset_button = Button(right_frame, text="Reset", command=partial(reset_form, student_name_entry, student_birthday_entry, student_phone_entry, student_email_entry, student_address_entry, student_class_entry), bg="red", fg="black")
+        reset_button = Button(right_frame, text="Reset", command=partial(reset_form3, student_id_var, student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var), bg="red", fg="black")
         reset_button.grid(row=17, column=4, columnspan=8, pady=10)
 
     def open_usg_window():
@@ -200,17 +231,20 @@ def open_main_window(root):
 
 
 
-        register_button = Button(right_frame, text="Update Student Grades", command=partial(), bg="green", fg="black")
+        register_button = Button(right_frame, text="Update Student Grades", bg="green", fg="black")
         register_button.grid(row=16, column=0, columnspan=8, pady=10)
 
 
-        reset_button = Button(right_frame, text="Reset", command=partial(reset_form, student_id_entry, student_grade1_entry, student_grade2_entry), bg="red", fg="black")
+        reset_button = Button(right_frame, text="Reset", command=partial(reset_form4, student_id_var, student_grade1_var, student_grade2_var), bg="red", fg="black")
         reset_button.grid(row=17, column=4, columnspan=8, pady=10)
 
     def open_vafs_window():
         # Clear the right frame
         for widget in right_frame.winfo_children():
             widget.destroy()
+
+        ambos_button= Button(right_frame, text="Ambos", bg="gray", fg="black")
+        ambos_button.grid(row=0, column= 0)
 
 
 
