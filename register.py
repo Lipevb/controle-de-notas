@@ -1,7 +1,8 @@
 import hashlib
 import re  # For password validation
 import os  # For generating random salt
-from dbfunc import update_user_db  # Import the function to update user database
+from dbfunc import register_user_db  # Import the function to update user database
+from resetforms import reset_form
 
 
 def hash_password(password, salt):
@@ -24,8 +25,7 @@ def validate_password(password):
 def register (user, pwd, success_label):
     username = user.get()
     password = pwd.get()
-    user.set("")
-    pwd.set("")
+    reset_form(user, pwd)
 
     # Validate the password
     validation_error = validate_password(password)
@@ -39,7 +39,7 @@ def register (user, pwd, success_label):
     # Hash the password with the salt
     hashed_password = hash_password(password, salt)
 
-    update_user_db(username, salt, hashed_password)
+    register_user_db(username, salt, hashed_password)
 
 
 

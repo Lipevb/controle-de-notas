@@ -1,7 +1,7 @@
 from functools import partial
 from tkinter import Label, Entry, Button, StringVar, Frame, BOTH, Y
 from register import register
-from dbfunc import fetch_student_data  
+from dbfunc import fetch_student_data
 import customtkinter as ctk
 from resetforms import reset_form, reset_form2, reset_form3, reset_form4
 
@@ -48,7 +48,7 @@ def open_main_window(root):
         password_entry = Entry(right_frame, textvariable=password_var, show="*")
         password_entry.pack(pady=5)
 
-        register_button = ctk.CTkButton(right_frame, text="Register", command=partial(register, username_entry, password_entry, SuccessLabel),fg_color="green", hover_color="#006400")
+        register_button = ctk.CTkButton(right_frame, text="Register", command=partial(register, username_var, password_var, SuccessLabel),fg_color="green", hover_color="#006400")
         register_button.pack(pady=(20,5))
 
         reset_button = ctk.CTkButton(right_frame, text="Reset", command=partial(reset_form, username_var, password_var), fg_color="red", hover_color="#8B0000")

@@ -1,4 +1,5 @@
 import hashlib
+from dbfunc import fetch_password_db
 
 
 
@@ -7,21 +8,24 @@ def hash_password(password, salt):
 
 def login(user, pwd, success_label):
 
-    username = user
-    password = pwd
-    
-    try:
-        with open("User.txt", "r") as file:
-            users = file.readlines()
-    except FileNotFoundError:
-        users = []
+    usr = user
+    pwd = pwd
 
-    for line in users:
-        stored_username, stored_salt, stored_hash = line.strip().split(";")
-        if username == stored_username and hash_password(password, stored_salt) == stored_hash:
-            return True
-    if username == "Admin" or password == "Admin":
+    user_data = fetch_password_db(usr)
+   
+    if  user_data:
+        password = user_data['password']
+        salt = user_data['addon']
+        hashed_password = hash_password(pwd, salt)
+        if hashed_password != password:
+            success_label.configure(text="Wrong username or password.")
+            return False
+        success_label.configure(text="Login successful!")
         return True
-    success_label.configure(text="Wrong username or password.")
-    return False
+    elif usr == "Admin" and pwd == "Admin":
+        success_label.configure(text="Admin login successful!")
+        return True
+    else:
+        success_label.configure(text="Wrong username or password.")
+        return False
 

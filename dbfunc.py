@@ -1,66 +1,112 @@
 import os
 from psycopg2 import pool, IntegrityError
-from dotenv import load_dotenv   
+from dotenv import load_dotenv
 
+# Global connection pool (create once, reuse many times)
+_connection_pool = None
+active_pools = []
 
-def update_user_db(username, salt, hashed_password):
+def get_connection_pool():
+    """Get or create a single global connection pool"""
+    global _connection_pool
+    if _connection_pool is None:
+        load_dotenv()
+        connection_string = os.getenv('DATABASE_URL')
+        
+        _connection_pool = pool.SimpleConnectionPool(
+            1,  # Minimum number of connections in the pool
+            10,  # Maximum number of connections in the pool
+            connection_string
+        )
+        
+        # Track this pool
+        active_pools.append(_connection_pool)
+    
+    return _connection_pool
 
-    username_new = username
-    salt_new = salt
-    hashed_password_new = hashed_password
+def cleanup_connections():
+    """Close all active connection pools"""
+    global active_pools, _connection_pool
+    for pool_obj in active_pools:
+        try:
+            if pool_obj:
+                pool_obj.closeall()
+                print("Connection pool closed")
+        except Exception as e:
+            print(f"Error closing connection pool: {e}")
+    active_pools.clear()
+    _connection_pool = None
 
-    # Load .env file
-    load_dotenv()
-
-    # Get the connection string from the environment variable
-    connection_string = os.getenv('DATABASE_URL')
-
-    # Create a connection pool
-    connection_pool = pool.SimpleConnectionPool(
-        1,  # Minimum number of connections in the pool
-        10,  # Maximum number of connections in the pool
-        connection_string
-    )
-
-    # Check if the pool was created successfully
-    if connection_pool:
-        print("Connection pool created successfully")
-
-    # Get a connection from the pool
-    conn = connection_pool.getconn()
-
-    # Create a cursor object
-    cur = conn.cursor()
-
-    # Execute SQL commands to retrieve the current time and version from PostgreSQL
-    cur.execute('SELECT username FROM users;')
-    usernames = cur.fetchall()
-
-    # Check if username already exists
-    for user in usernames:
-        if user[0] == username_new:
-            print("username already in use")
-            cur.close()
-            connection_pool.putconn(conn)
-            connection_pool.closeall()
-            return
-
+def fetch_password_db(username):
+    connection_pool = get_connection_pool()
+    conn = None
+    cur = None
+    
     try:
-        cur.execute('INSERT INTO users (username, addon, password) VALUES(%s, %s, %s) RETURNING id;', (username_new, salt_new, hashed_password_new))
+        # Get a connection from the pool
+        conn = connection_pool.getconn()
+        cur = conn.cursor()
+
+        # Execute SQL commands
+        cur.execute("SELECT addon, password FROM users WHERE username=%s;", (username,))
+        log = cur.fetchone()
+
+        if log:
+            return {
+                "addon": log[0],
+                "password": log[1]
+            }
+        else:
+            print("No user found with the given username.")
+            return None
+            
+    except Exception as e:
+        print(f"Database error: {e}")
+        return None
+        
+    finally:
+        # Only close cursor and return connection to pool
+        # DON'T close the entire pool
+        if cur:
+            cur.close()
+        if conn:
+            connection_pool.putconn(conn)
+
+def register_user_db(username, salt, hashed_password):
+    connection_pool = get_connection_pool()
+    conn = None
+    cur = None
+    
+    try:
+        conn = connection_pool.getconn()
+        cur = conn.cursor()
+
+        cur.execute("INSERT INTO users (username, addon, password) VALUES(%s, %s, %s) RETURNING id;", 
+                   (username, salt, hashed_password))
         user_id = cur.fetchone()[0]
-        print(f"User {username_new} added with ID {user_id}")
+
+        conn.commit()
+        
+        print(f"User {username} added with ID {user_id}")
+        return True
+        
     except IntegrityError:
         print("username already in use")
-
-    # Close the cursor and return the connection to the pool
-    cur.close()
-    connection_pool.putconn(conn)
-
-    # Close all connections in the pool
-    connection_pool.closeall()
-
-    
-
+        if conn:
+            conn.rollback()
+        return False
+        
+    except Exception as e:
+        print(f"Database error: {e}")
+        if conn:
+            conn.rollback()
+        return False
+        
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            connection_pool.putconn(conn)
 
 def fetch_student_data(student_id):
     """
@@ -70,52 +116,39 @@ def fetch_student_data(student_id):
     if not student_id:
         print("Please enter a valid Student ID.")
         return None
+        
+    connection_pool = get_connection_pool()
+    conn = None
+    cur = None
 
     try:
-        # Load .env file
-        load_dotenv()
-
-    # Get the connection string from the environment variable
-        connection_string = os.getenv('DATABASE_URL')
-
-    # Create a connection pool
-        connection_pool = pool.SimpleConnectionPool(
-            1,  # Minimum number of connections in the pool
-            10,  # Maximum number of connections in the pool
-            connection_string
-        )
-
-    # Check if the pool was created successfully
-        if connection_pool:
-            print("Connection pool created successfully")
-
-    # Get a connection from the pool
+        # Get a connection from the pool
         conn = connection_pool.getconn()
-
-    # Create a cursor object
         cur = conn.cursor()
-        cur.execute("SELECT name, birthday, phone, email, address, class FROM students WHERE id = %s", (student_id,))
+        
+        cur.execute("SELECT nome, data_nascimento, telefone, email, endereço, curso FROM students WHERE id = %s", (student_id,))
         result = cur.fetchone()
 
-        cur.close()
-        connection_pool.putconn(conn)
-
-        connection_pool.closeall()
-        # Check if a result was found
-
         if result:
-            # Return the fetched data as a dictionary
             return {
-                "name": result[0],
-                "birthday": result[1],
-                "phone": result[2],
+                "nome": result[0],
+                "data": result[1],
+                "telefone": result[2],
                 "email": result[3],
-                "address": result[4],
-                "class": result[5],
+                "end": result[4],
+                "curso": result[5],
             }
         else:
             print("No student found with the given ID.")
             return None
+            
     except Exception as e:
-        print(f"Error fetching student data: {e}")
+        print(f"Error connecting to the database: {e}")
         return None
+        
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            connection_pool.putconn(conn)
+
