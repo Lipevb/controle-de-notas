@@ -1,6 +1,8 @@
 import hashlib
 import re  # For password validation
 import os  # For generating random salt
+from dbfunc import update_user_db  # Import the function to update user database
+
 
 def hash_password(password, salt):
     return hashlib.sha256((salt + password).encode()).hexdigest()
@@ -17,7 +19,36 @@ def validate_password(password):
     if not re.search(r"[0-9]", password):
         return "Password must contain at least one numeric character."
 
-def register(user, pwd, success_label):
+
+
+def register (user, pwd, success_label):
+    username = user.get()
+    password = pwd.get()
+    user.set("")
+    pwd.set("")
+
+    # Validate the password
+    validation_error = validate_password(password)
+    if validation_error:
+        success_label.configure(text=validation_error)
+        return
+
+    # Generate a random salt
+    salt = os.urandom(16).hex()
+
+    # Hash the password with the salt
+    hashed_password = hash_password(password, salt)
+
+    update_user_db(username, salt, hashed_password)
+
+
+
+
+
+
+
+
+def registertxt(user, pwd, success_label):
     username = user.get()
     password = pwd.get()
     user.set("")
