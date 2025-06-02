@@ -2,9 +2,9 @@ from tkinter import Tk, Label, Entry, Button, StringVar
 from functools import partial
 from Login import login
 from main_window import open_main_window 
+from close import on_closing, close_all
 import customtkinter as ctk
 import atexit
-from dbFunc import cleanup_connections
 
 def login_and_open_main(user_var, pass_var, success_label, root):
     username = user_var.get()
@@ -18,14 +18,9 @@ def login_and_open_main(user_var, pass_var, success_label, root):
     else:
         print("Login failed!")
 
-def on_closing():
-    """Handle window closing event"""
-    cleanup_connections()
-    root.quit()
-    root.destroy()
 
-# Register cleanup function to run when program exits
-atexit.register(cleanup_connections)
+
+atexit.register(close_all)
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -34,7 +29,7 @@ root = ctk.CTk()
 root.geometry("300x250")
 
 # Handle window close event
-root.protocol("WM_DELETE_WINDOW", on_closing)
+root.protocol("WM_DELETE_WINDOW", on_closing(root))
 
 titlelabel = ctk.CTkLabel(root, text="Please Enter User and Password")
 SuccessLabel = ctk.CTkLabel(root, text="")
@@ -48,7 +43,7 @@ PASS = ctk.CTkEntry(root, textvariable=pass_var, show="*")
 pass_var.set('')
 
 LogButton = ctk.CTkButton(root, text="Login", command=partial(login_and_open_main, user_var, pass_var, SuccessLabel, root), fg_color="green", hover_color="#006400")
-ExitButton = ctk.CTkButton(root, text="Close", command=on_closing, fg_color="red", hover_color="#8B0000")
+ExitButton = ctk.CTkButton(root, text="Close", command=on_closing(root), fg_color="red", hover_color="#8B0000")
 
 titlelabel.pack()
 SuccessLabel.pack()

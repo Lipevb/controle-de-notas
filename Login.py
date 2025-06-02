@@ -1,5 +1,5 @@
 import hashlib
-from dbfunc import fetch_password_db
+from dbFunc import fetch_password_db
 
 
 

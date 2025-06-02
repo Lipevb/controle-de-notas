@@ -1,8 +1,9 @@
 from functools import partial
 from tkinter import Label, Entry, Button, StringVar, Frame, BOTH, Y
-from MwFunc import register, populate_entries, cad_aluno, update_aluno
+from MwFunc import register, populate_entries, cad_aluno, update_aluno, update_notas, pop_notas
 import customtkinter as ctk
 from resetforms import reset_form, reset_form2, reset_form3, reset_form4
+from close import on_closing
 
 
 
@@ -183,6 +184,7 @@ def open_main_window(root):
             widget.destroy()
 
         student_id_var = StringVar()
+        student_name_var = StringVar()
         student_grade1_var = StringVar()
         student_grade2_var = StringVar()
 
@@ -193,27 +195,36 @@ def open_main_window(root):
         right_frame.grid_columnconfigure(3, weight=1)
         
 
-        Label(right_frame, text="Update Student Grades", bg="#282828", fg="white", font=("Arial", 16), anchor='center').grid(row=0, column=0, pady=(10,30), sticky="ew", columnspan=4)
+        Label(right_frame, text="Atualizar as notas do Aluno", bg="#282828", fg="white", font=("Arial", 16), anchor='center').grid(row=0, column=0, pady=(10,30), sticky="ew", columnspan=4)
+        SuccessLabel = Label(right_frame, text="", bg="#282828", fg="white")
+        SuccessLabel.grid(row=1, column=0, columnspan=4, pady=(0, 10), sticky="ew")
 
-        Label(right_frame, text="Student ID:", bg="#282828", fg="white", font=("Arial",10), anchor="e").grid(row=2, column=1, padx=(5,2), pady=5, sticky="ew")
+        Label(right_frame, text="ID do aluno:", bg="#282828", fg="white", font=("Arial",10), anchor="e").grid(row=2, column=0, padx=(5,2), pady=5, sticky="ew")
         student_id_entry = ctk.CTkEntry(right_frame, textvariable=student_id_var)
-        student_id_entry.grid(row=2, column=2, padx=(5,2), pady=5)
+        student_id_entry.grid(row=2, column=1, padx=(5,2), pady=5)
 
-        Label(right_frame, text="Grade 1:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=4, column=1,  padx=(5,2), pady=5, sticky="ew")
+        fetch_button = Button(right_frame, text="Buscar Dados", command=partial(pop_notas, student_id_var, student_name_var,student_grade1_var, student_grade2_var, SuccessLabel), bg="blue", fg="white")
+        fetch_button.grid(row=2, column=2, padx=(5,2), pady=5)
+
+        Label(right_frame, text="Nome do aluno:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=4, column=0, padx=(5,2), pady=5, sticky="ew")
+        student_name_entry = ctk.CTkEntry(right_frame, textvariable=student_name_var, state="readonly")
+        student_name_entry.grid(row=4, column=1, padx=(5,2), pady=5, sticky="ew")
+
+        Label(right_frame, text="Nota 1:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=6, column=0,  padx=(5,2), pady=5, sticky="ew")
         student_grade1_entry = ctk.CTkEntry(right_frame, textvariable=student_grade1_var)
-        student_grade1_entry.grid(row=4, column=2, padx=(5,2), pady=5)
+        student_grade1_entry.grid(row=6, column=1, padx=(5,2), pady=5)
 
-        Label(right_frame, text="Grade 2:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=6, column=1, padx=(5,2), pady=5, sticky="ew")
+        Label(right_frame, text="Nota 2:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=6, column=2, padx=(5,2), pady=5, sticky="ew")
         student_grade2_entry = ctk.CTkEntry(right_frame, textvariable=student_grade2_var)
-        student_grade2_entry.grid(row=6, column=2, padx=(5,2), pady=5)
+        student_grade2_entry.grid(row=6, column=3, padx=(5,2), pady=5)
 
 
 
-        register_button = ctk.CTkButton(right_frame, text="Update Student Grades", fg_color="green", hover_color="#006400")
+        register_button = ctk.CTkButton(right_frame, text="Update Student Grades", command=partial(update_notas, student_id_var, student_name_var,student_grade1_var, student_grade2_var, SuccessLabel) , fg_color="green", hover_color="#006400")
         register_button.grid(row=10, column=2, padx=(2,5), pady=(30, 5), sticky="w")
 
 
-        reset_button = ctk.CTkButton(right_frame, text="Reset", command=partial(reset_form4, student_id_var, student_grade1_var, student_grade2_var), fg_color="red", hover_color="#8B0000")
+        reset_button = ctk.CTkButton(right_frame, text="Reset", command=partial(reset_form4, student_id_var, student_name_var, student_grade1_var, student_grade2_var), fg_color="red", hover_color="#8B0000")
         reset_button.grid(row=10, column=3, padx=(2,5), pady=(30, 5), sticky="w")
 
     def open_vafs_window():
@@ -244,7 +255,7 @@ def open_main_window(root):
     FifthButton = ctk.CTkButton(left_frame, text="View A/F Students", command=open_vafs_window, fg_color="#202020")
     FifthButton.pack(pady=10)
 
-    ExitButton = ctk.CTkButton(left_frame, text="Close", command=root.quit, fg_color="#202020")
+    ExitButton = ctk.CTkButton(left_frame, text="Close", command=on_closing(root), fg_color="#202020")
     ExitButton.pack(pady=10)
 
 

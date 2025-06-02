@@ -208,3 +208,83 @@ def update_aluno_db(student_id, student_name, student_birthday, student_phone, s
             conn.rollback()
         return False
         
+
+def fetch_notas_db(student_id, student_name):
+    connection_pool = get_connection_pool()
+    conn = None
+    cur = None
+
+    try:
+        conn = connection_pool.getconn()
+        cur = conn.cursor()
+
+        cur.execute("SELECT nota1, nota2 FROM notas WHERE aluno_id = %s AND aluno_nome = %s", (student_id, student_name))
+        result = cur.fetchone()
+
+        if result:
+            return {
+                "grade1": result[0],
+                "grade2": result[1],
+            }
+        else:
+            print("No grades found for the given student.")
+            return None
+
+    except IntegrityError:
+        print("Failed to fetch grades. Please try again.")
+        if conn:
+            conn.rollback()
+        return None
+            
+    except Exception as e:
+        print(f"Error connecting to the database: {e}")
+        return None
+        
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            connection_pool.putconn(conn)
+
+
+def cad_notas_db(student_id, student_name, grade1, grade2, media):
+    connection_pool = get_connection_pool()
+    conn = None
+    cur = None
+
+    try:
+        conn = connection_pool.getconn()
+        cur = conn.cursor()
+
+        if grade1 is not None and grade2 is not None:
+            cur.execute("INSERT INTO notas (aluno_id, aluno_nome, nota1, nota2) VALUES (%s, %s, %f, %f, %f)", (student_id, student_name, grade1, grade2, media))
+            conn.commit()
+        else:
+            print("Grades cannot be None.")
+            return False
+        
+        if cur.rowcount == 0:
+            print("Failed to add grades. Please check the student ID and name.")
+            return False
+                
+        print(f"Grades for student {student_name} with ID {student_id} added successfully.")
+        return True
+
+    except IntegrityError:
+        print("Failed to register grades. Please try again.")
+        if conn:
+            conn.rollback()
+        return False
+        
+    except Exception as e:
+        print(f"Database error: {e}")
+        if conn:
+            conn.rollback()
+        return False
+        
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            connection_pool.putconn(conn)
+

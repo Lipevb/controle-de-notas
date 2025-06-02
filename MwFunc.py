@@ -1,7 +1,7 @@
 import hashlib
 import re  # For password validation
 import os  # For generating random salt
-from dbFunc import register_user_db, fetch_student_data, cad_aluno_db, update_aluno_db
+from dbFunc import register_user_db, fetch_student_data, cad_aluno_db, update_aluno_db, fetch_notas_db, cad_notas_db
 from resetforms import reset_form, reset_form2, reset_form3, reset_form4
 
 
@@ -110,3 +110,55 @@ def update_aluno(student_id_var, student_name_var, student_birthday_var, student
         SuccessLabel.configure(text="Student information updated successfully.")
     else:
         SuccessLabel.configure(text="Failed to update student information. Please try again.")
+
+
+def pop_notas(student_id_var, student_name_var, student_grade1, student_grade2, SuccessLabel):
+    student_id = student_id_var.get()
+    student_data = fetch_student_data(student_id)  
+
+    if student_data:
+        
+        student_name_var.set(student_data["name"])
+        
+        notas = fetch_notas_db(student_id, student_data["name"])
+        if notas:
+            student_grade1.set(notas["grade1"])
+            student_grade2.set(notas["grade2"])
+            SuccessLabel.configure(text="Notas encontradas.")
+        else:
+            student_grade1.set("")
+            student_grade2.set("")
+            SuccessLabel.configure(text="Notas não encontradas para esse aluno.")
+        
+    else:
+        reset_form4(student_id_var, student_name_var,student_grade1, student_grade2)
+        SuccessLabel.configure(text="Não foi possível encontrar aluno com esse ID.")
+
+
+def update_notas(student_id_var, student_name_var, student_grade1, student_grade2, SuccessLabel):
+    student_id = student_id_var.get()
+    student_name = student_name_var.get()
+    grade1 = student_grade1.get()
+    grade2 = student_grade2.get()
+
+    if grade1 is not None and grade1 < 0 or grade1 > 10:
+        SuccessLabel.configure(text="As notas devem estar entre 0 e 10.")
+        return
+
+    if grade2 is not None and grade2 < 0 or grade2 > 10:
+        SuccessLabel.configure(text="As notas devem estar entre 0 e 10.")
+        return
+    
+    if grade1 is not None and grade2 is not None: media = (grade1 + grade2) / 2  
+    elif grade1 is not None and grade2 is None: media = grade1 + 0 / 2
+    elif grade1 is None and grade2 is not None: media = 0 + grade2 / 2
+    else: media = 0
+
+    result = cad_notas_db(student_id, student_name, grade1, grade2, media)
+
+    reset_form4(student_id_var, student_name_var,student_grade1, student_grade2)
+
+    if result:
+        SuccessLabel.configure(text="Notas atualizadas com sucesso.")
+    else:
+        SuccessLabel.configure(text="Falha ao atualizar notas. Por favor, tente novamente.")
