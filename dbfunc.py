@@ -25,7 +25,7 @@ def get_connection_pool():
     return _connection_pool
 
 def cleanup_connections():
-    """Close all active connection pools"""
+
     global active_pools, _connection_pool
     for pool_obj in active_pools:
         try:
@@ -91,7 +91,7 @@ def register_user_db(username, salt, hashed_password):
         return True
         
     except IntegrityError:
-        print("username already in use")
+        print("Username already in use")
         if conn:
             conn.rollback()
         return False
@@ -108,15 +108,41 @@ def register_user_db(username, salt, hashed_password):
         if conn:
             connection_pool.putconn(conn)
 
+
+
+def cad_aluno_db(student_name, student_birthday, student_phone, student_email, student_address, student_class):
+    connection_pool = get_connection_pool()
+    conn = None
+    cur = None
+    try:
+        conn = connection_pool.getconn()
+        cur = conn.cursor()
+
+        cur.execute("INSERT INTO students (nome, data_nascimento, telefone, email, endereço, curso) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;", (student_name, student_birthday, student_phone, student_email, student_address, student_class))
+        aluno_id = cur.fetchone()[0]
+        conn.commit()
+
+        print(f"Student {student_name} added successfully with id {aluno_id}.")
+        return True
+    except IntegrityError:
+        print("Failed to register student. Please try again.")
+        if conn:
+            conn.rollback()
+        return False
+    except Exception as e:
+        print(f"Database error: {e}")
+        if conn:
+            conn.rollback()
+        return False
+    
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            connection_pool.putconn(conn)
+
+
 def fetch_student_data(student_id):
-    """
-    Fetch student data from the database based on the entered student ID.
-    Returns a dictionary with student data or None if no student is found.
-    """
-    if not student_id:
-        print("Please enter a valid Student ID.")
-        return None
-        
     connection_pool = get_connection_pool()
     conn = None
     cur = None
@@ -152,3 +178,33 @@ def fetch_student_data(student_id):
         if conn:
             connection_pool.putconn(conn)
 
+
+def update_aluno_db(student_id, student_name, student_birthday, student_phone, student_email, student_address, student_class):
+    connection_pool = get_connection_pool()
+    conn = None
+    cur = None
+
+    try:
+        conn = connection_pool.getconn()
+        cur = conn.cursor()
+
+        cur.execute("""UPDATE students SET nome = %s, data_nascimento = %s, telefone = %s, email = %s, endereço = %s, curso = %s WHERE id = %s""", (student_name, student_birthday, student_phone, student_email, student_address, student_class, student_id))
+        
+        if cur.rowcount == 0:
+            print("No student found with the given ID.")
+            return False
+        
+        conn.commit()
+        print(f"Student {student_name} with id {student_id} updated successfully.")
+        return True
+    except IntegrityError:
+        print("Failed to update student. Please try again.")
+        if conn:
+            conn.rollback()
+        return False
+    except Exception as e:
+        print(f"Database error: {e}")
+        if conn:
+            conn.rollback()
+        return False
+        
