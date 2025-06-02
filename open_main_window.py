@@ -37,15 +37,15 @@ def open_main_window(root):
         password_var = StringVar()
 
         # Add widgets to the right frame
-        Label(right_frame, text="Register New User", bg="#282828", fg="white", font=("Arial", 16)).pack(pady=10)
+        Label(right_frame, text="Register New User", bg="#282828", fg="white", font=("Arial", 16)).pack(pady=5)
         SuccessLabel = Label(right_frame, bg="#282828", fg="white")
         SuccessLabel.pack(pady=3)
         Label(right_frame, text="Username:", bg="#282828", fg="white", font=("Arial", 13)).pack(pady=5)
-        username_entry = Entry(right_frame, textvariable=username_var)
+        username_entry = ctk.CTkEntry(right_frame, textvariable=username_var)
         username_entry.pack(pady=5)
 
         Label(right_frame, text="Password:", bg="#282828", fg="white", font=("Arial", 13)).pack(pady=5)
-        password_entry = Entry(right_frame, textvariable=password_var, show="*")
+        password_entry = ctk.CTkEntry(right_frame, textvariable=password_var, show="*")
         password_entry.pack(pady=5)
 
         register_button = ctk.CTkButton(right_frame, text="Register", command=partial(register, username_var, password_var, SuccessLabel),fg_color="green", hover_color="#006400")
@@ -67,43 +67,48 @@ def open_main_window(root):
         student_address_var = StringVar()
         student_class_var = StringVar()
 
+        # Configura a coluna para ocupar todo o espaço disponível
+        right_frame.grid_columnconfigure(0, weight=1)
+        right_frame.grid_columnconfigure(1, weight=1)
+        right_frame.grid_columnconfigure(2, weight=1)
+        right_frame.grid_columnconfigure(3, weight=1)
+            
         # Add widgets to the right frame for student registration
-        Label(right_frame, text="Register New Student", fg="#282828", font=("Arial", 16)).grid(row=0, column=0, columnspan=4, pady=10)
+        Label(right_frame, text="Registro de novo aluno", bg="#282828", fg="white", font=("Arial", 16), anchor='center').grid(row=0, column=0, columnspan=4, pady=(10, 30), sticky="ew")
 
     
-        Label(right_frame, text="Student Name:", fg="#282828").grid(row=2, column=0, padx=5, pady=5, sticky="w")
-        student_name_entry = Entry(right_frame, textvariable=student_name_var)
-        student_name_entry.grid(row=2, column=1, padx=5, pady=5)
+        Label(right_frame, text="Nome do Aluno:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=2, column=0, padx=(5,2), pady=5, sticky="e")
+        student_name_entry = ctk.CTkEntry(right_frame, textvariable=student_name_var)
+        student_name_entry.grid(row=2, column=1, padx=(2,5), pady=5, sticky="w")
 
-        Label(right_frame, text="Student Birthday:", fg="#282828").grid(row=2, column=2, padx=5, pady=5, sticky="w")
-        student_birthday_entry = Entry(right_frame, textvariable=student_birthday_var)
-        student_birthday_entry.grid(row=2, column=3, padx=5, pady=5)
-
-       
-        Label(right_frame, text="Student Phone:", fg="#282828").grid(row=4, column=0, padx=5, pady=5, sticky="w")
-        student_phone_entry = Entry(right_frame, textvariable=student_phone_var)
-        student_phone_entry.grid(row=4, column=1, padx=5, pady=5)
-
-        Label(right_frame, text="Student Email:", fg="#282828").grid(row=4, column=2, padx=5, pady=5, sticky="w")
-        student_email_entry = Entry(right_frame, textvariable=student_email_var)
-        student_email_entry.grid(row=4, column=3, padx=5, pady=5)
+        Label(right_frame, text="Data de Nascimento:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=2, column=2, padx=(5,2), pady=5, sticky="e")
+        student_birthday_entry = ctk.CTkEntry(right_frame, textvariable=student_birthday_var)
+        student_birthday_entry.grid(row=2, column=3, padx=(2,5), pady=5, sticky="w")
 
        
-        Label(right_frame, text="Student Address:", fg="#282828").grid(row=6, column=0, padx=5, pady=5, sticky="w")
-        student_address_entry = Entry(right_frame, textvariable=student_address_var)
-        student_address_entry.grid(row=6, column=1, padx=5, pady=5)
+        Label(right_frame, text="Número de Telefone:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=4, column=0, padx=(5,2), pady=5, sticky="e")
+        student_phone_entry = ctk.CTkEntry(right_frame, textvariable=student_phone_var)
+        student_phone_entry.grid(row=4, column=1, padx=(2,5), pady=5, sticky="w")
 
-        Label(right_frame, text="Student Class:", fg="#282828").grid(row=6, column=2, padx=5, pady=5, sticky="w")
-        student_class_entry = Entry(right_frame, textvariable=student_class_var)
-        student_class_entry.grid(row=6, column=3, padx=5, pady=5)
+        Label(right_frame, text="Email do Aluno:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=4, column=2, padx=(5,2), pady=5, sticky="e")
+        student_email_entry = ctk.CTkEntry(right_frame, textvariable=student_email_var)
+        student_email_entry.grid(row=4, column=3, padx=(2,5), pady=5, sticky="w")
+
+        Label(right_frame, text="Endereço do Aluno:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=6, column=0, padx=(5,2), pady=5, sticky="e")
+        student_address_entry = ctk.CTkEntry(right_frame, textvariable=student_address_var)
+        student_address_entry.grid(row=6, column=1, padx=(2,5), pady=5, sticky="w")
+
+        Label(right_frame, text="Turma do aluno:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=6, column=2, padx=(5,2), pady=5, sticky="e")
+        student_class_entry = ctk.CTkEntry(right_frame, textvariable=student_class_var)
+        student_class_entry.grid(row=6, column=3, padx=(2,5), pady=5, sticky="w")
 
 
-        register_student_button = ctk.CTkButton(right_frame, text="Register Student", fg_color="green", hover_color="#006400")
-        register_student_button.grid(row=10, column=2, columnspan=4, pady=10)
+        register_student_button = ctk.CTkButton(right_frame, text="Cadastrar Aluno", fg_color="green", hover_color="#006400")
+        register_student_button.grid(row=10, column=2, padx=(2, 5), pady=(30, 5), sticky="w")
 
 
-        reset_stu_button = ctk.CTkButton(right_frame, text="Reset", command=partial(reset_form2, student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var),  fg_color="red", hover_color="#8B0000")
-        reset_stu_button.grid(row=12, column=2, columnspan=4, pady=10)
+        reset_stu_button = ctk.CTkButton(right_frame, text="Resetar", command=partial(reset_form2, student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var),  fg_color="red", hover_color="#8B0000")
+        reset_stu_button.grid(row=10, column=3, padx=(2, 5), pady=(30, 5), sticky="w")
         
 
     def open_usi_window():
@@ -120,6 +125,12 @@ def open_main_window(root):
         student_address_var = StringVar()
         student_class_var = StringVar()
 
+       # Configura a coluna para ocupar todo o espaço disponível
+        right_frame.grid_columnconfigure(0, weight=1)
+        right_frame.grid_columnconfigure(1, weight=1)
+        right_frame.grid_columnconfigure(2, weight=1)
+        right_frame.grid_columnconfigure(3, weight=1)
+        
         def populate_entries():
             """Fetch data and populate the entries."""
             student_id = student_id_var.get()
@@ -134,47 +145,47 @@ def open_main_window(root):
                 student_class_var.set(student_data["class"])
 
         # Add widgets to the right frame for updating student information
-        Label(right_frame, text="Update Student Information", fg="#282828", font=("Arial", 16)).grid(row=0, column=1, columnspan=8, pady=10)
+        Label(right_frame, text="Update Student Information", bg="#282828", fg="white", font=("Arial", 16), anchor='center').grid(row=0, column=0, columnspan=4, pady=(10, 30), sticky="ew")
 
-        Label(right_frame, text="Student ID:", fg="#282828").grid(row=2, column=0, padx=5, pady=5, sticky="w")
-        student_id_entry = Entry(right_frame, textvariable=student_id_var)
+        Label(right_frame, text="Student ID:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=2, column=0, padx=(5,2), pady=5, sticky="e")
+        student_id_entry = ctk.CTkEntry(right_frame, textvariable=student_id_var)
         student_id_entry.grid(row=2, column=1, padx=5, pady=5)
 
         fetch_button = Button(right_frame, text="Fetch Data", command=populate_entries, bg="blue", fg="white")
         fetch_button.grid(row=2, column=2, padx=5, pady=5)
 
-        Label(right_frame, text="Student Name:", fg="#282828").grid(row=4, column=0, padx=5, pady=5, sticky="w")
-        student_name_entry = Entry(right_frame, textvariable=student_name_var)
+        Label(right_frame, text="Student Name:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=4, column=0, padx=(10,5), pady=5, sticky="e")
+        student_name_entry = ctk.CTkEntry(right_frame, textvariable=student_name_var)
         student_name_entry.grid(row=4, column=1, padx=5, pady=5)
 
-        Label(right_frame, text="Student Birthday:", fg="#282828").grid(row=4, column=2, padx=5, pady=5, sticky="w")
-        student_birthday_entry = Entry(right_frame, textvariable=student_birthday_var)
-        student_birthday_entry.grid(row=4, column=3, padx=5, pady=5)
+        Label(right_frame, text="Student Birthday:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=4, column=2,  padx=10, pady=5, sticky="ew")
+        student_birthday_entry = ctk.CTkEntry(right_frame, textvariable=student_birthday_var)
+        student_birthday_entry.grid(row=4, column=3, padx=10, pady=5, sticky="ew")
 
-        Label(right_frame, text="Student Phone:", fg="#282828").grid(row=6, column=0, padx=5, pady=5, sticky="w")
-        student_phone_entry = Entry(right_frame, textvariable=student_phone_var)
+        Label(right_frame, text="Student Phone:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=6, column=0, padx=5, pady=5, sticky="e")
+        student_phone_entry = ctk.CTkEntry(right_frame, textvariable=student_phone_var)
         student_phone_entry.grid(row=6, column=1, padx=5, pady=5)
 
-        Label(right_frame, text="Student Email:", fg="#282828").grid(row=6, column=2, padx=5, pady=5, sticky="w")
-        student_email_entry = Entry(right_frame, textvariable=student_email_var)
-        student_email_entry.grid(row=6, column=3, padx=5, pady=5)
+        Label(right_frame, text="Student Email:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=6, column=2, padx=10, pady=5, sticky="ew")
+        student_email_entry = ctk.CTkEntry(right_frame, textvariable=student_email_var)
+        student_email_entry.grid(row=6, column=3, padx=10, pady=5, sticky="ew")
 
-        Label(right_frame, text="Student Address:", fg="#282828").grid(row=8, column=0, padx=5, pady=5, sticky="w")
-        student_address_entry = Entry(right_frame, textvariable=student_address_var)
+        Label(right_frame, text="Student Address:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=8, column=0, padx=5, pady=5, sticky="e")
+        student_address_entry = ctk.CTkEntry(right_frame, textvariable=student_address_var)
         student_address_entry.grid(row=8, column=1, padx=5, pady=5)
 
-        Label(right_frame, text="Student Class:", fg="#282828").grid(row=8, column=2, padx=5, pady=5, sticky="w")
-        student_class_entry = Entry(right_frame, textvariable=student_class_var)
-        student_class_entry.grid(row=8, column=3, padx=5, pady=5)
+        Label(right_frame, text="Student Class:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=8, column=2, padx=10, pady=5, sticky="ew")
+        student_class_entry = ctk.CTkEntry(right_frame, textvariable=student_class_var)
+        student_class_entry.grid(row=8, column=3, padx=10, pady=5, sticky="ew")
 
 
 
-        register_button = ctk.CTkButton(right_frame, text="Update Student Information", fg_color="green", hover_color="#006400")
-        register_button.grid(row=16, column=0, columnspan=8, pady=10)
+        register_button = ctk.CTkButton(right_frame, text="Atualizar informações", fg_color="green", hover_color="#006400")
+        register_button.grid(row=10, column=2, padx=(2,5), pady=(30, 5), sticky="w")
 
 
         reset_button = ctk.CTkButton(right_frame, text="Reset", command=partial(reset_form3, student_id_var, student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var), fg_color="red", hover_color="#8B0000")
-        reset_button.grid(row=17, column=4, columnspan=8, pady=10)
+        reset_button.grid(row=10, column=3, padx=(2,5), pady=(30, 5), sticky="w")
 
     def open_usg_window():
         # Clear the right frame
@@ -186,28 +197,34 @@ def open_main_window(root):
         student_grade2_var = StringVar()
 
 
-        Label(right_frame, text="Update Student Grades", fg="#282828", font=("Arial", 16)).grid(row=0, column=0, pady=10)
+        right_frame.grid_columnconfigure(0, weight=1)
+        right_frame.grid_columnconfigure(1, weight=1)
+        right_frame.grid_columnconfigure(2, weight=1)
+        right_frame.grid_columnconfigure(3, weight=1)
+        
 
-        Label(right_frame, text="Student ID:", fg="#282828").grid(row=2, column=0, padx=5, pady=5, sticky="w")
-        student_id_entry = Entry(right_frame, textvariable=student_id_var)
-        student_id_entry.grid(row=2, column=1, padx=5, pady=5)
+        Label(right_frame, text="Update Student Grades", bg="#282828", fg="white", font=("Arial", 16), anchor='center').grid(row=0, column=0, pady=(10,30), sticky="ew", columnspan=4)
 
-        Label(right_frame, text="Grade 1:", fg="#282828").grid(row=4, column=0, padx=5, pady=5, sticky="w")
-        student_grade1_entry = Entry(right_frame, textvariable=student_grade1_var)
-        student_grade1_entry.grid(row=4, column=1, padx=5, pady=5)
+        Label(right_frame, text="Student ID:", bg="#282828", fg="white", font=("Arial",10), anchor="e").grid(row=2, column=1, padx=(5,2), pady=5, sticky="ew")
+        student_id_entry = ctk.CTkEntry(right_frame, textvariable=student_id_var)
+        student_id_entry.grid(row=2, column=2, padx=(5,2), pady=5)
 
-        Label(right_frame, text="Grade 2:", fg="#282828").grid(row=6, column=0, padx=5, pady=5, sticky="w")
-        student_grade2_entry = Entry(right_frame, textvariable=student_grade2_var)
-        student_grade2_entry.grid(row=6, column=1, padx=5, pady=5)
+        Label(right_frame, text="Grade 1:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=4, column=1,  padx=(5,2), pady=5, sticky="ew")
+        student_grade1_entry = ctk.CTkEntry(right_frame, textvariable=student_grade1_var)
+        student_grade1_entry.grid(row=4, column=2, padx=(5,2), pady=5)
+
+        Label(right_frame, text="Grade 2:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=6, column=1, padx=(5,2), pady=5, sticky="ew")
+        student_grade2_entry = ctk.CTkEntry(right_frame, textvariable=student_grade2_var)
+        student_grade2_entry.grid(row=6, column=2, padx=(5,2), pady=5)
 
 
 
         register_button = ctk.CTkButton(right_frame, text="Update Student Grades", fg_color="green", hover_color="#006400")
-        register_button.grid(row=16, column=0, columnspan=8, pady=10)
+        register_button.grid(row=10, column=2, padx=(2,5), pady=(30, 5), sticky="w")
 
 
         reset_button = ctk.CTkButton(right_frame, text="Reset", command=partial(reset_form4, student_id_var, student_grade1_var, student_grade2_var), fg_color="red", hover_color="#8B0000")
-        reset_button.grid(row=17, column=4, columnspan=8, pady=10)
+        reset_button.grid(row=10, column=3, padx=(2,5), pady=(30, 5), sticky="w")
 
     def open_vafs_window():
         # Clear the right frame
@@ -221,23 +238,23 @@ def open_main_window(root):
 
 
 
-    # Add buttons to the left frame
-    RegButton = Button(left_frame, text="Register New User", command=open_register_window)
+    # Add buttons to the left frame #202020
+    RegButton = ctk.CTkButton(left_frame, text="Register New User", command=open_register_window, fg_color="#202020")
     RegButton.pack(pady=10)
 
-    SecondButton = Button(left_frame, text="Register New Student", command=open_student_register_window)
+    SecondButton = ctk.CTkButton(left_frame, text="Register New Student", command=open_student_register_window, fg_color="#202020")
     SecondButton.pack(pady=10)
 
-    ThirdButton = Button(left_frame, text="Update Student Information", command=open_usi_window)
+    ThirdButton = ctk.CTkButton(left_frame, text="Update Student Information", command=open_usi_window, fg_color="#202020")
     ThirdButton.pack(pady=10)
 
-    FourthButton = Button(left_frame, text="Update Student Grades", command=open_usg_window)
+    FourthButton = ctk.CTkButton(left_frame, text="Update Student Grades", command=open_usg_window, fg_color="#202020")
     FourthButton.pack(pady=10)
 
-    FifthButton = Button(left_frame, text="View A/F Students", command=open_vafs_window)
+    FifthButton = ctk.CTkButton(left_frame, text="View A/F Students", command=open_vafs_window, fg_color="#202020")
     FifthButton.pack(pady=10)
 
-    ExitButton = Button(left_frame, text="Close", command=root.quit)
+    ExitButton = ctk.CTkButton(left_frame, text="Close", command=root.quit, fg_color="#202020")
     ExitButton.pack(pady=10)
 
 
