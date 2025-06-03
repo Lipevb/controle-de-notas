@@ -1,6 +1,7 @@
 import hashlib
-import re  # For password validation
-import os  # For generating random salt
+import re  
+import os  
+from datetime import datetime
 from dbFunc import register_user_db, fetch_student_data, cad_aluno_db, update_aluno_db, fetch_notas_db, cad_notas_db
 from resetforms import reset_form, reset_form2, reset_form3, reset_form4
 
@@ -27,16 +28,16 @@ def register (user, pwd, success_label):
     password = pwd.get()
     reset_form(user, pwd)
 
-    # Validate the password
+    
     validation_error = validate_password(password)
     if validation_error:
         success_label.configure(text=validation_error)
         return
 
-    # Generate a random salt
+    
     salt = os.urandom(16).hex()
 
-    # Hash the password with the salt
+    
     hashed_password = hash_password(password, salt)
 
     result = register_user_db(username, salt, hashed_password)
@@ -54,11 +55,17 @@ def cad_aluno(student_name_var, student_birthday_var, student_phone_var, student
     student_address = student_address_var.get()
     student_class = student_class_var.get()
 
-    if not all([student_name, student_birthday, student_phone, student_email, student_address, student_class]):
+    if '/' in student_birthday:
+        data = datetime.strptime(student_birthday, '%d/%m/%Y')
+        data_format = data.strftime('%Y-%m-%d')
+    else:
+        data_format = student_birthday
+
+    if not all([student_name, data_format, student_phone, student_email, student_address, student_class]):
         SuccessLabel.configure(text="Please fill in all fields.")
         return
 
-    result = cad_aluno_db(student_name, student_birthday, student_phone, student_email, student_address, student_class)
+    result = cad_aluno_db(student_name, data_format, student_phone, student_email, student_address, student_class)
     if result:
         SuccessLabel.configure(text="Student registered successfully.")
     else:
@@ -74,13 +81,13 @@ def populate_entries(student_id_var, student_name_var, student_birthday_var, stu
     student_data = fetch_student_data(student_id)  
 
     if student_data:
-        student_name_var.set(student_data["name"])
-        student_birthday_var.set(student_data["birthday"])
-        student_phone_var.set(student_data["phone"])
+        student_name_var.set(student_data["nome"])
+        student_birthday_var.set(student_data["data"])
+        student_phone_var.set(student_data["telefone"])
         student_email_var.set(student_data["email"])
-        student_address_var.set(student_data["address"])
-        student_class_var.set(student_data["class"])
-        SuccessLabel.configure(text="Student data populated successfully.")
+        student_address_var.set(student_data["end"])
+        student_class_var.set(student_data["curso"])
+        SuccessLabel.configure(text="Dados do aluno preenchidos com sucesso.")
     else:
         student_name_var.set("")
         student_birthday_var.set("")
@@ -88,7 +95,7 @@ def populate_entries(student_id_var, student_name_var, student_birthday_var, stu
         student_email_var.set("")
         student_address_var.set("")
         student_class_var.set("")
-        SuccessLabel.configure(text="No student found with the given ID.")
+        SuccessLabel.configure(text="Nenhum aluno com esse ID encontrado.")
 
 
 def update_aluno(student_id_var, student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var, SuccessLabel):

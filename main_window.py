@@ -76,7 +76,8 @@ def open_main_window(root):
             
         # Add widgets to the right frame for student registration
         Label(right_frame, text="Registro de novo aluno", bg="#282828", fg="white", font=("Arial", 16), anchor='center').grid(row=0, column=0, columnspan=4, pady=(10, 30), sticky="ew")
-        SuccessLabel = Label(right_frame, text="", bg="#282828", fg="white").grid(row=1, column=0, columnspan=4, pady=(0, 10), sticky="ew")
+        SuccessLabel = Label(right_frame, text="", bg="#282828", fg="white")
+        SuccessLabel.grid(row=1, column=0, columnspan=4, pady=(0, 10), sticky="ew")
 
     
         Label(right_frame, text="Nome do Aluno:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=2, column=0, padx=(5,2), pady=5, sticky="e")
@@ -136,7 +137,8 @@ def open_main_window(root):
 
         # Add widgets to the right frame for updating student information
         Label(right_frame, text="Update Student Information", bg="#282828", fg="white", font=("Arial", 16), anchor='center').grid(row=0, column=0, columnspan=4, pady=(10, 30), sticky="ew")
-        SuccessLabel = Label(right_frame, text="", bg="#282828", fg="white").grid(row=1, column=0, columnspan=4, pady=(0, 10), sticky="ew")
+        SuccessLabel = Label(right_frame, text="", bg="#282828", fg="white")
+        SuccessLabel.grid(row=1, column=0, columnspan=4, pady=(0, 10), sticky="ew")
 
         Label(right_frame, text="Student ID:", bg="#282828", fg="white", font=("Arial", 10), anchor="e").grid(row=2, column=0, padx=(5,2), pady=5, sticky="e")
         student_id_entry = ctk.CTkEntry(right_frame, textvariable=student_id_var)
@@ -232,8 +234,17 @@ def open_main_window(root):
         for widget in right_frame.winfo_children():
             widget.destroy()
 
+
+        Label(right_frame, text="Alunos Aprovados e Reprovados", bg="#282828", fg="white", font=("Arial", 16), anchor='center').grid(row=0, column=0, pady=(10,30), sticky="ew", columnspan=4)
+        SuccessLabel = Label(right_frame, text="", bg="#282828", fg="white")
+        SuccessLabel.grid(row=1, column=0, columnspan=4, pady=(0, 10), sticky="ew")
+
         ambos_button= Button(right_frame, text="Ambos", bg="gray", fg="black")
-        ambos_button.grid(row=0, column= 0)
+        ambos_button.grid(row=2, column= 0, columnspan=2, padx=(5,2), pady=5, sticky="ew")
+        aprovados_button = Button(right_frame, text="Aprovados", bg="green", fg="white")
+        aprovados_button.grid(row=2, column= 2, columnspan=2, padx=(5,2), pady=5, sticky="ew")
+        reprovados_button = Button(right_frame, text="Reprovados", bg="red", fg="white")
+        reprovados_button.grid(row=2, column= 4, columnspan=2, padx=(5,2), pady=5, sticky="ew")
 
 
 
@@ -255,7 +266,7 @@ def open_main_window(root):
     FifthButton = ctk.CTkButton(left_frame, text="View A/F Students", command=open_vafs_window, fg_color="#202020")
     FifthButton.pack(pady=10)
 
-    ExitButton = ctk.CTkButton(left_frame, text="Close", command=on_closing(root), fg_color="#202020")
+    ExitButton = ctk.CTkButton(left_frame, text="Close", command=lambda: on_closing(root), fg_color="#202020")
     ExitButton.pack(pady=10)
 
 
