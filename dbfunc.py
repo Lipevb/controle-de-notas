@@ -287,4 +287,3 @@ def cad_notas_db(student_id, student_name, grade1, grade2, media):
             cur.close()
         if conn:
             connection_pool.putconn(conn)
-

@@ -22,7 +22,7 @@ def login(user, pwd, success_label):
             return False
         success_label.configure(text="Login successful!")
         return True
-    elif usr == "Admin" and pwd == "Admin":
+    elif usr == "admin" and pwd == "admin":
         success_label.configure(text="Admin login successful!")
         return True
     else:
