@@ -218,7 +218,7 @@ def fetch_notas_db(student_id, student_name):
         conn = connection_pool.getconn()
         cur = conn.cursor()
 
-        cur.execute("SELECT nota1, nota2 FROM notas WHERE aluno_id = %s AND aluno_nome = %s", (student_id, student_name))
+        cur.execute("SELECT nota1, nota2 FROM notas WHERE aluno_id = %s", (student_id))
         result = cur.fetchone()
 
         if result:
@@ -247,7 +247,7 @@ def fetch_notas_db(student_id, student_name):
             connection_pool.putconn(conn)
 
 
-def cad_notas_db(student_id, student_name, grade1, grade2, media):
+def cad_notas_db(student_id, grade1, grade2, media):
     connection_pool = get_connection_pool()
     conn = None
     cur = None
@@ -256,22 +256,20 @@ def cad_notas_db(student_id, student_name, grade1, grade2, media):
         conn = connection_pool.getconn()
         cur = conn.cursor()
 
-        if grade1 is not None and grade2 is not None:
-            cur.execute("INSERT INTO notas (aluno_id, aluno_nome, nota1, nota2) VALUES (%s, %s, %f, %f, %f)", (student_id, student_name, grade1, grade2, media))
+        if grade1 is not None and grade2 is not None and media is not None:
+            # Only need student_id now
+            cur.execute("INSERT INTO notas (aluno_id, nota1, nota2, media) VALUES (%s, %s, %s, %s)", 
+                       (student_id, grade1, grade2, media))
             conn.commit()
+            
+            print(f"Grades for student ID {student_id} added successfully.")
+            return True
         else:
-            print("Grades cannot be None.")
+            print("Grades and media cannot be None.")
             return False
-        
-        if cur.rowcount == 0:
-            print("Failed to add grades. Please check the student ID and name.")
-            return False
-                
-        print(f"Grades for student {student_name} with ID {student_id} added successfully.")
-        return True
 
-    except IntegrityError:
-        print("Failed to register grades. Please try again.")
+    except IntegrityError as e:
+        print(f"Failed to register grades: {e}")
         if conn:
             conn.rollback()
         return False
