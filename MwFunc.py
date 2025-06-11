@@ -112,17 +112,21 @@ def update_aluno(student_id_var, student_name_var, student_birthday_var, student
     student_address = student_address_var.get()
     student_class = student_class_var.get()
 
-    if '/' in student_birthday:
-        data = datetime.strptime(student_birthday, '%d/%m/%Y')
-        data_format = data.strftime('%Y-%m-%d')
-    else:
-        data_format = student_birthday
-
+    try:
+        if '/' in student_birthday:
+            data = datetime.strptime(student_birthday, '%d/%m/%Y')
+            data_format = data.strftime('%Y-%m-%d')
+        else:
+            data_format = student_birthday
+    except ValueError:
+        SuccessLabel.configure(text=f"Data inválida: {student_birthday}. Use o formato DD/MM/AAAA e verifique se a data é válida.")
+        return
+    
     if not all([student_id, student_name, data_format, student_phone, student_email, student_address, student_class]):
         SuccessLabel.configure(text="Please fill in all fields.")
         return
 
-    result = update_aluno_db(student_id, student_name, student_birthday, student_phone, student_email, student_address, student_class)
+    result = update_aluno_db(student_id, student_name, data_format, student_phone, student_email, student_address, student_class)
     reset_form3(student_id_var, student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var)
     if result:
         SuccessLabel.configure(text=f"Dados do aluno {student_name} atualizados com sucesso.")
@@ -168,12 +172,16 @@ def update_notas(student_id_var, student_name_var, student_grade1, student_grade
         return
     
     if nota1_str is not None: 
+        if not validar_notas(nota1_str, SuccessLabel):
+            return
         nota1 = float(nota1_str)
         if nota1 < 0 or nota1 > 10:
             SuccessLabel.configure(text="As notas devem estar entre 0 e 10.")
             return
 
-    if nota2_str is not None: 
+    if nota2_str is not None:
+        if not validar_notas(nota2_str, SuccessLabel):
+            return 
         nota2 = float(nota2_str)
         if nota2 < 0 or nota2 > 10:
             SuccessLabel.configure(text="As notas devem estar entre 0 e 10.")
@@ -197,23 +205,22 @@ def update_notas(student_id_var, student_name_var, student_grade1, student_grade
         SuccessLabel.configure(text="Falha ao atualizar notas. Por favor, tente novamente.")
 
 
-def validate_decimal_input(char,):
-    if char == "":
-        return True
-    
+def validar_notas(nota, Success_label):
+
     # Allow numbers, dots, and commas
     allowed_chars = "0123456789."
     
     # Check if all characters are allowed
-    for c in char:
+    for c in nota:
         if c not in allowed_chars:
+            Success_label.configure(text="Notas devem conter apenas números e ponto como indicador de decimal.")
             return False
     
     # Ensure only one decimal separator
-    dot_count = char.count('.')
-    comma_count = char.count(',')
+    dot_count = nota.count('.')
     
-    if dot_count + comma_count > 1:
+    if dot_count > 1:
+        Success_label.configure(text="Apenas um ponto decimal é permitido.")
         return False
     
     return True

@@ -251,19 +251,32 @@ def cad_notas_db(student_id, grade1, grade2, media):
         conn = connection_pool.getconn()
         cur = conn.cursor()
 
-        if grade1 is not None and grade2 is not None and media is not None:
-            # Only need student_id now
-            cur.execute("INSERT INTO notas (aluno_id, nota1, nota2, media) VALUES (%s, %s, %s, %s)", (student_id, grade1, grade2, media))
-            conn.commit()
-            
-            print(f"Grades for student ID {student_id} added successfully.")
-            return True
-        else:
+        if grade1 is None or grade2 is None or media is None:
             print("Grades and media cannot be None.")
             return False
 
+        cur.execute("SELECT aluno_id FROM notas WHERE aluno_id = %s", (student_id,))
+        existing = cur.fetchone()
+
+        if existing:
+            cur.execute("""UPDATE notas SET nota1 = %s, nota2 = %s, media = %s WHERE aluno_id = %s""", (grade1, grade2, media, student_id))
+
+            if cur.rowcount > 0:
+                conn.commit()
+                print(f"Grades for student ID {student_id} updated successfully.")
+                return True
+            else:
+                print(f"No grades found to update for student ID {student_id}.")
+                return False
+            
+        else:
+            cur.execute("""INSERT INTO notas (aluno_id, nota1, nota2, media) VALUES (%s, %s, %s, %s)""", (student_id, grade1, grade2, media))
+            conn.commit()
+            print(f"Grades for student ID {student_id} added successfully.")
+            return True
+
     except IntegrityError as e:
-        print(f"Failed to register grades: {e}")
+        print(f"Database integrity error: {e}")
         if conn:
             conn.rollback()
         return False

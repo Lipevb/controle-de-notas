@@ -1,7 +1,7 @@
 from functools import partial
 from tkinter import StringVar, BOTH, Y
 import customtkinter as ctk
-from MwFunc import register, populate_entries, cad_aluno, update_aluno, update_notas, pop_notas, validate_decimal_input
+from MwFunc import register, populate_entries, cad_aluno, update_aluno, update_notas, pop_notas
 from resetforms import reset_form, reset_form2, reset_form3, reset_form4
 from close import on_closing
 from table_functions import create_table_header, populate_table, setup_table_frame_columns
@@ -245,13 +245,13 @@ def open_main_window(root):
         student_name_entry = ctk.CTkEntry(right_frame, textvariable=student_name_var, state="readonly")
         student_name_entry.grid(row=4, column=1, padx=5, pady=5)
 
-        vcmd = (right_frame.register(validate_decimal_input), '%P')
+
         ctk.CTkLabel(right_frame, text="Nota 1:", font=ctk.CTkFont(size=13)).grid(row=6, column=0, padx=(5,2), pady=5, sticky="e")
-        student_grade1_entry = ctk.CTkEntry(right_frame, textvariable=student_grade1_var, validate='key', validatecommand=vcmd, placeholder_text="Ex: 7,5 ou 7.5")
+        student_grade1_entry = ctk.CTkEntry(right_frame, textvariable=student_grade1_var, placeholder_text_color="white", placeholder_text="5.55")
         student_grade1_entry.grid(row=6, column=1, padx=5, pady=5)
 
-        ctk.CTkLabel(right_frame, text="Nota 2:", font=ctk.CTkFont(size=13), anchor="e").grid(row=6, column=2, padx=10, pady=5, sticky="ew")
-        student_grade2_entry = ctk.CTkEntry(right_frame, textvariable=student_grade2_var, validate='key', validatecommand=vcmd, placeholder_text="Ex: 7,5 ou 7.5")
+        ctk.CTkLabel(right_frame, text="Nota 2:", font=ctk.CTkFont(size=13)).grid(row=6, column=2, padx=10, pady=5, sticky="ew")
+        student_grade2_entry = ctk.CTkEntry(right_frame, textvariable=student_grade2_var, placeholder_text="5.55", placeholder_text_color="white")
         student_grade2_entry.grid(row=6, column=3, padx=10, pady=5, sticky="ew")
 
         ctk.CTkLabel(right_frame, text="Média:", font=ctk.CTkFont(size=13)).grid(row=8, column=1, padx=(5,2), pady=5, sticky="e")
