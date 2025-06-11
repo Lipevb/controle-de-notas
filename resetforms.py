@@ -25,8 +25,15 @@ def reset_form3(student_id_var, student_name_var, student_birthday_var, student_
     student_address_var.set("")
 
 
-def reset_form4(student_id_var, student_name_var,student_grade1, student_grade2):
+def reset_form4(student_id_var, student_name_var,student_grade1, student_grade2, student_media):
+    student_media.set("")
     student_id_var.set("")
     student_name_var.set("")
     student_grade2.set("")
     student_grade1.set("")
+
+def reset_form5(student_name_var, student_grade1, student_grade2, student_media):
+    student_name_var.set("")
+    student_grade1.set("")
+    student_grade2.set("")
+    student_media.set("")

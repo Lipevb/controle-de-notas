@@ -123,17 +123,17 @@ def cad_aluno_db(student_name, student_birthday, student_phone, student_email, s
         conn.commit()
 
         print(f"Student {student_name} added successfully with id {aluno_id}.")
-        return True
+        return aluno_id
     except IntegrityError:
         print("Failed to register student. Please try again.")
         if conn:
             conn.rollback()
-        return False
+        return None
     except Exception as e:
         print(f"Database error: {e}")
         if conn:
             conn.rollback()
-        return False
+        return None
     
     finally:
         if cur:
@@ -209,7 +209,7 @@ def update_aluno_db(student_id, student_name, student_birthday, student_phone, s
         return False
         
 
-def fetch_notas_db(student_id, student_name):
+def fetch_notas_db(student_id):
     connection_pool = get_connection_pool()
     conn = None
     cur = None
@@ -218,24 +218,19 @@ def fetch_notas_db(student_id, student_name):
         conn = connection_pool.getconn()
         cur = conn.cursor()
 
-        cur.execute("SELECT nota1, nota2 FROM notas WHERE aluno_id = %s", (student_id))
+        cur.execute("SELECT nota1, nota2, media FROM notas WHERE aluno_id = %s", (student_id,))
         result = cur.fetchone()
 
         if result:
             return {
-                "grade1": result[0],
-                "grade2": result[1],
+                "nota1": result[0],  
+                "nota2": result[1],  
+                "media": result[2]
             }
         else:
             print("No grades found for the given student.")
             return None
 
-    except IntegrityError:
-        print("Failed to fetch grades. Please try again.")
-        if conn:
-            conn.rollback()
-        return None
-            
     except Exception as e:
         print(f"Error connecting to the database: {e}")
         return None
@@ -258,8 +253,7 @@ def cad_notas_db(student_id, grade1, grade2, media):
 
         if grade1 is not None and grade2 is not None and media is not None:
             # Only need student_id now
-            cur.execute("INSERT INTO notas (aluno_id, nota1, nota2, media) VALUES (%s, %s, %s, %s)", 
-                       (student_id, grade1, grade2, media))
+            cur.execute("INSERT INTO notas (aluno_id, nota1, nota2, media) VALUES (%s, %s, %s, %s)", (student_id, grade1, grade2, media))
             conn.commit()
             
             print(f"Grades for student ID {student_id} added successfully.")
@@ -279,6 +273,131 @@ def cad_notas_db(student_id, grade1, grade2, media):
         if conn:
             conn.rollback()
         return False
+        
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            connection_pool.putconn(conn)
+
+def fetch_all_students_with_grades():
+    """Fetch all students with their grades (including students without grades)"""
+    connection_pool = get_connection_pool()
+    conn = None
+    cur = None
+
+    try:
+        conn = connection_pool.getconn()
+        cur = conn.cursor()
+
+        # LEFT JOIN to include students without grades
+        cur.execute("""
+            SELECT s.id, s.nome, n.nota1, n.nota2, n.media
+            FROM students s
+            LEFT JOIN notas n ON s.id = n.aluno_id
+            ORDER BY s.id
+        """)
+        results = cur.fetchall()
+
+        students_data = []
+        for result in results:
+            students_data.append({
+                "id": result[0],
+                "nome": result[1],
+                "nota1": result[2] if result[2] is not None else "N/A",
+                "nota2": result[3] if result[3] is not None else "N/A",
+                "media": result[4] if result[4] is not None else "N/A"
+            })
+        
+        return students_data
+
+    except Exception as e:
+        print(f"Error fetching all students: {e}")
+        return []
+        
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            connection_pool.putconn(conn)
+
+def fetch_approved_students():
+    """Fetch only approved students (media >= 7.0)"""
+    connection_pool = get_connection_pool()
+    conn = None
+    cur = None
+
+    try:
+        conn = connection_pool.getconn()
+        cur = conn.cursor()
+
+        # INNER JOIN to only get students with grades, filter by media >= 7.0
+        cur.execute("""
+            SELECT s.id, s.nome, n.nota1, n.nota2, n.media
+            FROM students s
+            INNER JOIN notas n ON s.id = n.aluno_id
+            WHERE n.media >= 7.0
+            ORDER BY s.id
+        """)
+        results = cur.fetchall()
+
+        students_data = []
+        for result in results:
+            students_data.append({
+                "id": result[0],
+                "nome": result[1],
+                "nota1": result[2],
+                "nota2": result[3],
+                "media": result[4]
+            })
+        
+        return students_data
+
+    except Exception as e:
+        print(f"Error fetching approved students: {e}")
+        return []
+        
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            connection_pool.putconn(conn)
+
+def fetch_failed_students():
+    """Fetch only failed students (media < 7.0)"""
+    connection_pool = get_connection_pool()
+    conn = None
+    cur = None
+
+    try:
+        conn = connection_pool.getconn()
+        cur = conn.cursor()
+
+        # INNER JOIN to only get students with grades, filter by media < 7.0
+        cur.execute("""
+            SELECT s.id, s.nome, n.nota1, n.nota2, n.media
+            FROM students s
+            INNER JOIN notas n ON s.id = n.aluno_id
+            WHERE n.media < 7.0
+            ORDER BY s.id
+        """)
+        results = cur.fetchall()
+
+        students_data = []
+        for result in results:
+            students_data.append({
+                "id": result[0],
+                "nome": result[1],
+                "nota1": result[2],
+                "nota2": result[3],
+                "media": result[4]
+            })
+        
+        return students_data
+
+    except Exception as e:
+        print(f"Error fetching failed students: {e}")
+        return []
         
     finally:
         if cur:
