@@ -68,7 +68,7 @@ def open_main_window(root):
         right_frame.grid_columnconfigure(2, weight=2)
 
         # ✅ Use CustomTkinter labels consistently
-        title_label = ctk.CTkLabel(right_frame, text="Register New User", font=ctk.CTkFont(size=16, weight="bold"))
+        title_label = ctk.CTkLabel(right_frame, text="Registrar Novo Usuário", font=ctk.CTkFont(size=16, weight="bold"))
         title_label.grid(row=0, column=0, columnspan=4, pady=(10,30), sticky="ew")
         
         success_label = ctk.CTkLabel(right_frame, text="")
@@ -86,7 +86,7 @@ def open_main_window(root):
         password_entry = ctk.CTkEntry(right_frame, textvariable=password_var, show="*", width=180)
         password_entry.grid(row=5, column=2, pady=(0,10), sticky="w")
 
-        register_button = ctk.CTkButton(right_frame, text="Register", command=partial(register, username_var, password_var, success_label),fg_color="green", hover_color="#006400", width=180)
+        register_button = ctk.CTkButton(right_frame, text="Registrar", command=partial(register, username_var, password_var, success_label),fg_color="green", hover_color="#006400", width=180)
         register_button.grid(row=6, column=2, pady=(20,5), sticky="w")
 
         reset_button = ctk.CTkButton(right_frame, text="Reset",  command=partial(reset_form, username_var, password_var), fg_color="red", hover_color="#8B0000", width=180)
@@ -110,34 +110,34 @@ def open_main_window(root):
         right_frame.grid_columnconfigure(3, weight=1)
 
         # ✅ Use CustomTkinter labels consistently
-        title_label = ctk.CTkLabel(right_frame, text="Registro de novo aluno", font=ctk.CTkFont(size=16, weight="bold"))
+        title_label = ctk.CTkLabel(right_frame, text="Registrar novo aluno", font=ctk.CTkFont(size=16, weight="bold"))
         title_label.grid(row=0, column=0, columnspan=4, pady=(10, 30), sticky="ew")
         
         success_label = ctk.CTkLabel(right_frame, text="")
         success_label.grid(row=1, column=0, columnspan=4, pady=(0, 10), sticky="ew")
 
         # Student form fields
-        ctk.CTkLabel(right_frame, text="Nome do Aluno:", font=ctk.CTkFont(size=10)).grid(row=3, column=0, padx=(5,2), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Nome do Aluno:", font=ctk.CTkFont(size=13)).grid(row=3, column=0, padx=(5,2), pady=5, sticky="e")
         student_name_entry = ctk.CTkEntry(right_frame, textvariable=student_name_var)
         student_name_entry.grid(row=3, column=1, padx=(2,5), pady=5, sticky="w")
 
-        ctk.CTkLabel(right_frame, text="Data de Nascimento:", font=ctk.CTkFont(size=10)).grid(row=3, column=2, padx=(5,2), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Data de Nascimento:", font=ctk.CTkFont(size=13)).grid(row=3, column=2, padx=(5,2), pady=5, sticky="e")
         student_birthday_entry = ctk.CTkEntry(right_frame, textvariable=student_birthday_var)
         student_birthday_entry.grid(row=3, column=3, padx=(2,5), pady=5, sticky="w")
 
-        ctk.CTkLabel(right_frame, text="Número de Telefone:", font=ctk.CTkFont(size=10)).grid(row=5, column=0, padx=(5,2), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Número de Telefone:", font=ctk.CTkFont(size=13)).grid(row=5, column=0, padx=(5,2), pady=5, sticky="e")
         student_phone_entry = ctk.CTkEntry(right_frame, textvariable=student_phone_var)
         student_phone_entry.grid(row=5, column=1, padx=(2,5), pady=5, sticky="w")
 
-        ctk.CTkLabel(right_frame, text="Email do Aluno:", font=ctk.CTkFont(size=10)).grid(row=5, column=2, padx=(5,2), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Email do Aluno:", font=ctk.CTkFont(size=13)).grid(row=5, column=2, padx=(5,2), pady=5, sticky="e")
         student_email_entry = ctk.CTkEntry(right_frame, textvariable=student_email_var)
         student_email_entry.grid(row=5, column=3, padx=(2,5), pady=5, sticky="w")
 
-        ctk.CTkLabel(right_frame, text="Endereço do Aluno:", font=ctk.CTkFont(size=10)).grid(row=7, column=0, padx=(5,2), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Endereço do Aluno:", font=ctk.CTkFont(size=13)).grid(row=7, column=0, padx=(5,2), pady=5, sticky="e")
         student_address_entry = ctk.CTkEntry(right_frame, textvariable=student_address_var)
         student_address_entry.grid(row=7, column=1, padx=(2,5), pady=5, sticky="w")
 
-        ctk.CTkLabel(right_frame, text="Turma do aluno:", font=ctk.CTkFont(size=10)).grid(row=7, column=2, padx=(5,2), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Turma do aluno:", font=ctk.CTkFont(size=13)).grid(row=7, column=2, padx=(5,2), pady=5, sticky="e")
         student_class_entry = ctk.CTkEntry(right_frame, textvariable=student_class_var)
         student_class_entry.grid(row=7, column=3, padx=(2,5), pady=5, sticky="w")
 
@@ -168,40 +168,40 @@ def open_main_window(root):
         right_frame.grid_columnconfigure(3, weight=1)
 
         # ✅ Use CustomTkinter labels consistently
-        title_label = ctk.CTkLabel(right_frame, text="Update Student Information", font=ctk.CTkFont(size=16, weight="bold"))
+        title_label = ctk.CTkLabel(right_frame, text="Atualizar informação de Aluno", font=ctk.CTkFont(size=16, weight="bold"))
         title_label.grid(row=0, column=0, columnspan=4, pady=(10, 30), sticky="ew")
         
         success_label = ctk.CTkLabel(right_frame, text="")
         success_label.grid(row=1, column=0, columnspan=4, pady=(0, 10), sticky="ew")
 
-        ctk.CTkLabel(right_frame, text="Student ID:", font=ctk.CTkFont(size=10)).grid(row=2, column=0, padx=(5,2), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="ID do Aluno:", font=ctk.CTkFont(size=13)).grid(row=2, column=0, padx=(5,2), pady=5, sticky="e")
         student_id_entry = ctk.CTkEntry(right_frame, textvariable=student_id_var)
         student_id_entry.grid(row=2, column=1, padx=5, pady=5)
 
-        fetch_button = ctk.CTkButton(right_frame, text="Fetch Data", command=partial(populate_entries, student_id_var, student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var, success_label), fg_color="blue", hover_color="#0066CC")
+        fetch_button = ctk.CTkButton(right_frame, text="Buscar Dados", command=partial(populate_entries, student_id_var, student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var, success_label), fg_color="blue", hover_color="#0066CC")
         fetch_button.grid(row=2, column=2, padx=5, pady=5)
 
-        ctk.CTkLabel(right_frame, text="Student Name:", font=ctk.CTkFont(size=10)).grid(row=4, column=0, padx=(10,5), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Nome do Aluno:", font=ctk.CTkFont(size=13)).grid(row=4, column=0, padx=(10,5), pady=5, sticky="e")
         student_name_entry = ctk.CTkEntry(right_frame, textvariable=student_name_var)
         student_name_entry.grid(row=4, column=1, padx=5, pady=5)
 
-        ctk.CTkLabel(right_frame, text="Student Birthday:", font=ctk.CTkFont(size=10)).grid(row=4, column=2,  padx=10, pady=5, sticky="ew")
+        ctk.CTkLabel(right_frame, text="Data de nascimento:", font=ctk.CTkFont(size=13)).grid(row=4, column=2,  padx=10, pady=5, sticky="ew")
         student_birthday_entry = ctk.CTkEntry(right_frame, textvariable=student_birthday_var)
         student_birthday_entry.grid(row=4, column=3, padx=10, pady=5, sticky="ew")
 
-        ctk.CTkLabel(right_frame, text="Student Phone:", font=ctk.CTkFont(size=10)).grid(row=6, column=0, padx=5, pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Número de Telefone:", font=ctk.CTkFont(size=13)).grid(row=6, column=0, padx=5, pady=5, sticky="e")
         student_phone_entry = ctk.CTkEntry(right_frame, textvariable=student_phone_var)
         student_phone_entry.grid(row=6, column=1, padx=5, pady=5)
 
-        ctk.CTkLabel(right_frame, text="Student Email:", font=ctk.CTkFont(size=10)).grid(row=6, column=2, padx=10, pady=5, sticky="ew")
+        ctk.CTkLabel(right_frame, text="Email do Aluno:", font=ctk.CTkFont(size=13)).grid(row=6, column=2, padx=10, pady=5, sticky="ew")
         student_email_entry = ctk.CTkEntry(right_frame, textvariable=student_email_var)
         student_email_entry.grid(row=6, column=3, padx=10, pady=5, sticky="ew")
 
-        ctk.CTkLabel(right_frame, text="Student Address:", font=ctk.CTkFont(size=10)).grid(row=8, column=0, padx=5, pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Endereço do Aluno:", font=ctk.CTkFont(size=13)).grid(row=8, column=0, padx=5, pady=5, sticky="e")
         student_address_entry = ctk.CTkEntry(right_frame, textvariable=student_address_var)
         student_address_entry.grid(row=8, column=1, padx=5, pady=5)
 
-        ctk.CTkLabel(right_frame, text="Student Class:", font=ctk.CTkFont(size=10)).grid(row=8, column=2, padx=10, pady=5, sticky="ew")
+        ctk.CTkLabel(right_frame, text="Turma do Aluno:", font=ctk.CTkFont(size=13)).grid(row=8, column=2, padx=10, pady=5, sticky="ew")
         student_class_entry = ctk.CTkEntry(right_frame, textvariable=student_class_var)
         student_class_entry.grid(row=8, column=3, padx=10, pady=5, sticky="ew")
 
@@ -228,38 +228,38 @@ def open_main_window(root):
         right_frame.grid_columnconfigure(2, weight=1)
         right_frame.grid_columnconfigure(3, weight=1)
 
-        title_label = ctk.CTkLabel(right_frame, text="Atualizar as notas do Aluno", font=ctk.CTkFont(size=16, weight="bold"))
+        title_label = ctk.CTkLabel(right_frame, text="Atualizar notas do Aluno", font=ctk.CTkFont(size=16, weight="bold"))
         title_label.grid(row=0, column=0, pady=(10,30), sticky="ew", columnspan=4)
         
         success_label = ctk.CTkLabel(right_frame, text="")
         success_label.grid(row=1, column=0, columnspan=4, pady=(0, 10), sticky="ew")
 
-        ctk.CTkLabel(right_frame, text="ID do aluno:", font=ctk.CTkFont(size=10)).grid(row=2, column=0, padx=(5,2), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="ID do aluno:", font=ctk.CTkFont(size=13)).grid(row=2, column=0, padx=(5,2), pady=5, sticky="e")
         student_id_entry = ctk.CTkEntry(right_frame, textvariable=student_id_var)
         student_id_entry.grid(row=2, column=1, padx=5, pady=5)
 
         fetch_button = ctk.CTkButton(right_frame, text="Buscar Dados", command=partial(pop_notas, student_id_var, student_name_var,student_grade1_var, student_grade2_var, student_media_var, success_label), fg_color="blue", hover_color="#0066CC")
         fetch_button.grid(row=2, column=2, padx=5, pady=5)
 
-        ctk.CTkLabel(right_frame, text="Nome do aluno:", font=ctk.CTkFont(size=10)).grid(row=4, column=0, padx=(5,2), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Nome do aluno:", font=ctk.CTkFont(size=13)).grid(row=4, column=0, padx=(5,2), pady=5, sticky="e")
         student_name_entry = ctk.CTkEntry(right_frame, textvariable=student_name_var, state="readonly")
         student_name_entry.grid(row=4, column=1, padx=5, pady=5)
 
         vcmd = (right_frame.register(validate_decimal_input), '%P')
-        ctk.CTkLabel(right_frame, text="Nota 1:", font=ctk.CTkFont(size=10)).grid(row=6, column=0, padx=(5,2), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Nota 1:", font=ctk.CTkFont(size=13)).grid(row=6, column=0, padx=(5,2), pady=5, sticky="e")
         student_grade1_entry = ctk.CTkEntry(right_frame, textvariable=student_grade1_var, validate='key', validatecommand=vcmd, placeholder_text="Ex: 7,5 ou 7.5")
         student_grade1_entry.grid(row=6, column=1, padx=5, pady=5)
 
-        ctk.CTkLabel(right_frame, text="Nota 2:", font=ctk.CTkFont(size=10)).grid(row=6, column=2, padx=10, pady=5, sticky="ew")
+        ctk.CTkLabel(right_frame, text="Nota 2:", font=ctk.CTkFont(size=13), anchor="e").grid(row=6, column=2, padx=10, pady=5, sticky="ew")
         student_grade2_entry = ctk.CTkEntry(right_frame, textvariable=student_grade2_var, validate='key', validatecommand=vcmd, placeholder_text="Ex: 7,5 ou 7.5")
         student_grade2_entry.grid(row=6, column=3, padx=10, pady=5, sticky="ew")
 
-        ctk.CTkLabel(right_frame, text="Média:", font=ctk.CTkFont(size=10)).grid(row=8, column=1, padx=(5,2), pady=5, sticky="e")
+        ctk.CTkLabel(right_frame, text="Média:", font=ctk.CTkFont(size=13)).grid(row=8, column=1, padx=(5,2), pady=5, sticky="e")
         student_media_entry = ctk.CTkEntry(right_frame, textvariable=student_media_var, state="readonly")
         student_media_entry.grid(row=8, column=2, padx=5, pady=5)
 
 
-        register_button = ctk.CTkButton(right_frame, text="Update Student Grades", command=partial(update_notas, student_id_var, student_name_var,student_grade1_var, student_grade2_var, student_media_var, success_label) , fg_color="green", hover_color="#006400")
+        register_button = ctk.CTkButton(right_frame, text="Atualizar notas", command=partial(update_notas, student_id_var, student_name_var,student_grade1_var, student_grade2_var, student_media_var, success_label) , fg_color="green", hover_color="#006400")
         register_button.grid(row=10, column=2, padx=(2,5), pady=(30, 5), sticky="w")
 
 
@@ -309,13 +309,13 @@ def open_main_window(root):
         populate_table(table_frame, "all")
 
     # Create navigation buttons
-    RegButton = ctk.CTkButton(left_frame, text="Register New User", command=open_register_window, fg_color="#202020")
+    RegButton = ctk.CTkButton(left_frame, text="Registrar Novo Usuário", command=open_register_window, fg_color="#202020")
     RegButton.pack(pady=10)
 
-    SecondButton = ctk.CTkButton(left_frame, text="Register New Student", command=open_student_register_window, fg_color="#202020")
+    SecondButton = ctk.CTkButton(left_frame, text="Registrar Novo Aluno", command=open_student_register_window, fg_color="#202020")
     SecondButton.pack(pady=10)
 
-    ThirdButton = ctk.CTkButton(left_frame, text="Update Student Information", command=open_usi_window, fg_color="#202020")
+    ThirdButton = ctk.CTkButton(left_frame, text="Atualizar Informações Aluno", command=open_usi_window, fg_color="#202020")
     ThirdButton.pack(pady=10)
 
     FourthButton = ctk.CTkButton(left_frame, text="Atualizar notas do Aluno", command=open_usg_window, fg_color="#202020")
@@ -324,7 +324,7 @@ def open_main_window(root):
     FifthButton = ctk.CTkButton(left_frame, text="Tabela Aprov/Reprov", command=open_aprrpr_window, fg_color="#202020")
     FifthButton.pack(pady=10)
 
-    ExitButton = ctk.CTkButton(left_frame, text="Close", command=lambda: on_closing(root), fg_color="#492424", hover_color="#FF0000")
+    ExitButton = ctk.CTkButton(left_frame, text="Fechar", command=lambda: on_closing(root), fg_color="#492424", hover_color="#FF0000")
     ExitButton.pack(pady=10)
 
 

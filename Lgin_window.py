@@ -31,7 +31,7 @@ root.geometry("300x250")
 # Handle window close event
 root.protocol("WM_DELETE_WINDOW", lambda: on_closing(root))
 
-titlelabel = ctk.CTkLabel(root, text="Please Enter User and Password")
+titlelabel = ctk.CTkLabel(root, text="Insira Usuário e Senha", font=("Arial", 13, "bold"))
 SuccessLabel = ctk.CTkLabel(root, text="")
 
 user_var = ctk.StringVar()
@@ -43,7 +43,7 @@ PASS = ctk.CTkEntry(root, textvariable=pass_var, show="*")
 pass_var.set('')
 
 LogButton = ctk.CTkButton(root, text="Login", command=partial(login_and_open_main, user_var, pass_var, SuccessLabel, root), fg_color="green", hover_color="#006400")
-ExitButton = ctk.CTkButton(root, text="Close", command=lambda: on_closing(root), fg_color="red", hover_color="#8B0000")
+ExitButton = ctk.CTkButton(root, text="Fechar", command=lambda: on_closing(root), fg_color="red", hover_color="#8B0000")
 
 titlelabel.pack()
 SuccessLabel.pack()
