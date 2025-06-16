@@ -25,8 +25,8 @@ O sistema oferece as seguintes funcionalidades principais:
 * **CustomTkinter:** Biblioteca baseada em Tkinter que permite criar interfaces modernas e personalizadas, deixando o visual do sistema mais atraente e intuitivo.
 
 
-## 📸 Demonstração do Projeto
+<!-- # 📸 Demonstração do Projeto
 
 <p align="center">
     <img src="demo.gif" alt="Demonstração do Sistema de Cadastro de Notas de Alunos" width="600"/>
-</p>
+</p> > 
