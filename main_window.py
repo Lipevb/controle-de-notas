@@ -27,6 +27,22 @@ def open_main_window(root):
     right_frame = ctk.CTkFrame(root, fg_color="#282828")
     right_frame.pack(side="left", fill=BOTH, expand=True)
 
+    welcome_title = ctk.CTkLabel(
+    right_frame,
+    text="Seja bem-vindo(a)!",
+    font=ctk.CTkFont(size=20, weight="bold"),
+    justify="center"
+)
+    welcome_title.place(relx=0.5, rely=0.4, anchor="center")
+
+    welcome_msg = ctk.CTkLabel(
+        right_frame,
+        text="Clique em algum botão na lateral esquerda para acessar o serviço desejado.",
+        font=ctk.CTkFont(size=14),
+        justify="center"
+    )
+    welcome_msg.place(relx=0.5, rely=0.48, anchor="center")
+
     def cleanup_right_frame():
         try:
             for widget in right_frame.winfo_children():
@@ -315,13 +331,13 @@ def open_main_window(root):
     SecondButton = ctk.CTkButton(left_frame, text="Registrar Novo Aluno", command=open_student_register_window, fg_color="#202020")
     SecondButton.pack(pady=10)
 
-    ThirdButton = ctk.CTkButton(left_frame, text="Atualizar Informações Aluno", command=open_usi_window, fg_color="#202020")
+    ThirdButton = ctk.CTkButton(left_frame, text="Atualizar Informação Aluno", command=open_usi_window, fg_color="#202020")
     ThirdButton.pack(pady=10)
 
     FourthButton = ctk.CTkButton(left_frame, text="Atualizar notas do Aluno", command=open_usg_window, fg_color="#202020")
     FourthButton.pack(pady=10)
 
-    FifthButton = ctk.CTkButton(left_frame, text="Tabela Aprov/Reprov", command=open_aprrpr_window, fg_color="#202020")
+    FifthButton = ctk.CTkButton(left_frame, text="Situação Alunos", command=open_aprrpr_window, fg_color="#202020")
     FifthButton.pack(pady=10)
 
     ExitButton = ctk.CTkButton(left_frame, text="Fechar", command=lambda: on_closing(root), fg_color="#492424", hover_color="#FF0000")
