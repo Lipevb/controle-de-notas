@@ -12,15 +12,15 @@ def hash_password(password, salt):
 
 def validate_password(password):
     if len(password) < 8:
-        return "Password must be at least 8 characters long."
+        return "Senha deve ter pelo menos 8 caracteres."
     if not re.search(r"[!@#$%^&*(),.?\":{}|<>~`+=\[\]\\\/]", password):
-        return "Password must contain at least one special character."
+        return "Senha deve conter pelo menos um caractere especial."
     if not re.search(r"[A-Z]", password):
-        return "Password must contain at least one uppercase character."
+        return "Senha deve conter pelo menos uma letra maiúscula."
     if not re.search(r"[a-z]", password):
-        return "Password must contain at least one lowercase character."
+        return "Senha deve conter pelo menos uma letra minúscula."
     if not re.search(r"[0-9]", password):
-        return "Password must contain at least one numeric character."
+        return "Senha deve conter pelo menos um dígito numérico."
 
 
 
@@ -43,9 +43,9 @@ def register (user, pwd, success_label):
 
     result = register_user_db(username, salt, hashed_password)
     if result:
-        success_label.configure(text="User registered successfully.")
+        success_label.configure(text="Usuário registrado com sucesso!")
     else:
-        success_label.configure(text="Username already exists or registration failed.")
+        success_label.configure(text="Falha ao registrar usuário. Por favor, tente novamente.")
 
 
 def cad_aluno(student_name_var, student_birthday_var, student_phone_var, student_email_var, student_address_var, student_class_var, SuccessLabel):
@@ -66,7 +66,7 @@ def cad_aluno(student_name_var, student_birthday_var, student_phone_var, student
         SuccessLabel.configure(text=f"Data inválida: {student_birthday}. Use o formato DD/MM/AAAA e verifique se a data é válida.")
         return
     if not all([student_name, data_format, student_phone, student_email, student_address, student_class]):
-        SuccessLabel.configure(text="Please fill in all fields.")
+        SuccessLabel.configure(text="Por favor, preencha todos os campos.")
         return
 
     result = cad_aluno_db(student_name, data_format, student_phone, student_email, student_address, student_class)
@@ -123,7 +123,7 @@ def update_aluno(student_id_var, student_name_var, student_birthday_var, student
         return
     
     if not all([student_id, student_name, data_format, student_phone, student_email, student_address, student_class]):
-        SuccessLabel.configure(text="Please fill in all fields.")
+        SuccessLabel.configure(text="Por favor, preencha todos os campos.")
         return
 
     result = update_aluno_db(student_id, student_name, data_format, student_phone, student_email, student_address, student_class)
@@ -207,16 +207,13 @@ def update_notas(student_id_var, student_name_var, student_grade1, student_grade
 
 def validar_notas(nota, Success_label):
 
-    # Allow numbers, dots, and commas
     allowed_chars = "0123456789."
     
-    # Check if all characters are allowed
     for c in nota:
         if c not in allowed_chars:
             Success_label.configure(text="Notas devem conter apenas números e ponto como indicador de decimal.")
             return False
     
-    # Ensure only one decimal separator
     dot_count = nota.count('.')
     
     if dot_count > 1:

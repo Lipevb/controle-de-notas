@@ -28,7 +28,6 @@ ctk.set_default_color_theme("blue")
 root = ctk.CTk()
 root.geometry("300x250")
 
-# Handle window close event
 root.protocol("WM_DELETE_WINDOW", lambda: on_closing(root))
 
 titlelabel = ctk.CTkLabel(root, text="Insira Usuário e Senha", font=("Arial", 13 , "bold"))

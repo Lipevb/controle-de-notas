@@ -9,21 +9,17 @@ from table_functions import create_table_header, populate_table, setup_table_fra
 
 
 def open_main_window(root):
-    # Destroy all widgets in the root window
     for widget in root.winfo_children():
         widget.destroy()
 
-    # Configure the root window for the main window
     root.geometry("800x600")
     root.resizable(False, False)
     root.title("Main Window")
 
-    # Create the left frame
     left_frame = ctk.CTkFrame(root, fg_color="#202020", width=180)
     left_frame.pack(side="left", fill=Y)
     left_frame.pack_propagate(False)
 
-    # Create the right frame
     right_frame = ctk.CTkFrame(root, fg_color="#282828")
     right_frame.pack(side="left", fill=BOTH, expand=True)
 
@@ -53,11 +49,11 @@ def open_main_window(root):
                 except:
                     pass
             
-            # Reset all column configurations
-            for i in range(10):  # Reset first 10 columns (more than enough)
+
+            for i in range(10):
                 right_frame.grid_columnconfigure(i, weight=0, minsize=0)
             
-            # Reset all row configurations
+
             for i in range(20):
                 right_frame.grid_rowconfigure(i, weight=0, minsize=0)
             
@@ -67,14 +63,11 @@ def open_main_window(root):
         except Exception as e:
             print(f"Error in cleanup: {e}")
     
-    # Update the display
     right_frame.update()
 
-    # Function to open the register form in the right frame
     def open_register_window():
-        cleanup_right_frame()  # Use enhanced cleanup
+        cleanup_right_frame()
 
-        # Create StringVars for username and password
         username_var = StringVar()
         password_var = StringVar()
 
@@ -83,20 +76,19 @@ def open_main_window(root):
         right_frame.grid_columnconfigure(1, weight=1)
         right_frame.grid_columnconfigure(2, weight=2)
 
-        # ✅ Use CustomTkinter labels consistently
         title_label = ctk.CTkLabel(right_frame, text="Registrar Novo Usuário", font=ctk.CTkFont(size=16, weight="bold"))
         title_label.grid(row=0, column=0, columnspan=4, pady=(10,30), sticky="ew")
         
         success_label = ctk.CTkLabel(right_frame, text="")
         success_label.grid(row=1, column=0, columnspan=4, pady=(0,10), sticky="ew")
 
-        username_label = ctk.CTkLabel(right_frame, text="Username:", font=ctk.CTkFont(size=13))
+        username_label = ctk.CTkLabel(right_frame, text="Usuário:", font=ctk.CTkFont(size=13))
         username_label.grid(row=2, column=2, pady=(5,0), sticky="w")
         
         username_entry = ctk.CTkEntry(right_frame, textvariable=username_var, width=180)
         username_entry.grid(row=3, column=2, pady=(0,10), sticky="w")
 
-        password_label = ctk.CTkLabel(right_frame, text="Password:", font=ctk.CTkFont(size=13))
+        password_label = ctk.CTkLabel(right_frame, text="Senha:", font=ctk.CTkFont(size=13))
         password_label.grid(row=4, column=2, pady=(5,0), sticky="w")
         
         password_entry = ctk.CTkEntry(right_frame, textvariable=password_var, show="*", width=180)
@@ -111,28 +103,24 @@ def open_main_window(root):
     def open_student_register_window():
         cleanup_right_frame()
 
-        # Create StringVars for student registration
-        student_name_var = StringVar() #no banco está NOME
-        student_birthday_var = StringVar()#no banco está DATA_NASCIMENTO
-        student_phone_var = StringVar()#no banco está TELEFONE
-        student_email_var = StringVar()#no banco está EMAIL
-        student_address_var = StringVar()#no banco está ENDEREÇO
-        student_class_var = StringVar()#no banco está CURSO
+        student_name_var = StringVar()
+        student_birthday_var = StringVar()
+        student_phone_var = StringVar()
+        student_email_var = StringVar()
+        student_address_var = StringVar()
+        student_class_var = StringVar()
 
-        # Configure grid
         right_frame.grid_columnconfigure(0, weight=1)
         right_frame.grid_columnconfigure(1, weight=1)
         right_frame.grid_columnconfigure(2, weight=1)
         right_frame.grid_columnconfigure(3, weight=1)
 
-        # ✅ Use CustomTkinter labels consistently
         title_label = ctk.CTkLabel(right_frame, text="Registrar novo aluno", font=ctk.CTkFont(size=16, weight="bold"))
         title_label.grid(row=0, column=0, columnspan=4, pady=(10, 30), sticky="ew")
         
         success_label = ctk.CTkLabel(right_frame, text="")
         success_label.grid(row=1, column=0, columnspan=4, pady=(0, 10), sticky="ew")
 
-        # Student form fields
         ctk.CTkLabel(right_frame, text="Nome do Aluno:", font=ctk.CTkFont(size=13)).grid(row=3, column=0, padx=(5,2), pady=5, sticky="e")
         student_name_entry = ctk.CTkEntry(right_frame, textvariable=student_name_var)
         student_name_entry.grid(row=3, column=1, padx=(2,5), pady=5, sticky="w")
@@ -168,22 +156,19 @@ def open_main_window(root):
     def open_usi_window():
         cleanup_right_frame()
 
-        # Create StringVars for updating student information
-        student_id_var = StringVar() #no banco está id
-        student_name_var = StringVar() #no banco está NOME
-        student_birthday_var = StringVar()#no banco está DATA_NASCIMENTO
-        student_phone_var = StringVar()#no banco está TELEFONE
-        student_email_var = StringVar()#no banco está EMAIL
-        student_address_var = StringVar()#no banco está ENDEREÇO
-        student_class_var = StringVar()#no banco está CURSO
+        student_id_var = StringVar()
+        student_name_var = StringVar()
+        student_birthday_var = StringVar()
+        student_phone_var = StringVar()
+        student_email_var = StringVar()
+        student_address_var = StringVar()
+        student_class_var = StringVar()
 
-       # Configura a coluna para ocupar todo o espaço disponível
         right_frame.grid_columnconfigure(0, weight=1)
         right_frame.grid_columnconfigure(1, weight=1)
         right_frame.grid_columnconfigure(2, weight=1)
         right_frame.grid_columnconfigure(3, weight=1)
 
-        # ✅ Use CustomTkinter labels consistently
         title_label = ctk.CTkLabel(right_frame, text="Atualizar informação de Aluno", font=ctk.CTkFont(size=16, weight="bold"))
         title_label.grid(row=0, column=0, columnspan=4, pady=(10, 30), sticky="ew")
         
@@ -293,22 +278,17 @@ def open_main_window(root):
         title_label = ctk.CTkLabel(right_frame, text="Alunos Aprovados e Reprovados", font=ctk.CTkFont(size=16, weight="bold"))
         title_label.grid(row=0, column=0, pady=(10,30), sticky="ew", columnspan=4)
         
-        # Create button frame
         button_frame = ctk.CTkFrame(right_frame, fg_color="#282828")
         button_frame.grid(row=1, column=0, columnspan=4, pady=10, sticky="ew")
         
-        # Create scrollable frame for the table
         table_frame = ctk.CTkScrollableFrame(right_frame, fg_color="#383838", height=400)
         table_frame.grid(row=2, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
         
-        # Configure grid weight for table frame
         right_frame.grid_rowconfigure(2, weight=1)
 
-        # Setup table
         setup_table_frame_columns(table_frame)
         create_table_header(table_frame)
 
-        # Create filter buttons
         button_frame.grid_columnconfigure(0, weight=1)
         button_frame.grid_columnconfigure(1, weight=1)
         button_frame.grid_columnconfigure(2, weight=1)
@@ -324,7 +304,6 @@ def open_main_window(root):
 
         populate_table(table_frame, "all")
 
-    # Create navigation buttons
     RegButton = ctk.CTkButton(left_frame, text="Registrar Novo Usuário", command=open_register_window, fg_color="#202020")
     RegButton.pack(pady=10)
 

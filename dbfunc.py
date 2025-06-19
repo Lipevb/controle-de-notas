@@ -2,24 +2,22 @@ import os
 from psycopg2 import pool, IntegrityError
 from dotenv import load_dotenv
 
-# Global connection pool (create once, reuse many times)
+
 _connection_pool = None
 active_pools = []
 
 def get_connection_pool():
-    """Get or create a single global connection pool"""
     global _connection_pool
     if _connection_pool is None:
         load_dotenv()
         connection_string = os.getenv('DATABASE_URL')
         
         _connection_pool = pool.SimpleConnectionPool(
-            1,  # Minimum number of connections in the pool
-            10,  # Maximum number of connections in the pool
+            1,
+            10,
             connection_string
         )
-        
-        # Track this pool
+
         active_pools.append(_connection_pool)
     
     return _connection_pool
@@ -43,11 +41,9 @@ def fetch_password_db(username):
     cur = None
     
     try:
-        # Get a connection from the pool
         conn = connection_pool.getconn()
         cur = conn.cursor()
 
-        # Execute SQL commands
         cur.execute("SELECT addon, password FROM users WHERE username=%s;", (username,))
         log = cur.fetchone()
 
@@ -65,8 +61,6 @@ def fetch_password_db(username):
         return None
         
     finally:
-        # Only close cursor and return connection to pool
-        # DON'T close the entire pool
         if cur:
             cur.close()
         if conn:
@@ -148,7 +142,6 @@ def fetch_student_data(student_id):
     cur = None
 
     try:
-        # Get a connection from the pool
         conn = connection_pool.getconn()
         cur = conn.cursor()
         
@@ -294,7 +287,6 @@ def cad_notas_db(student_id, grade1, grade2, media):
             connection_pool.putconn(conn)
 
 def fetch_all_students_with_grades():
-    """Fetch all students with their grades (including students without grades)"""
     connection_pool = get_connection_pool()
     conn = None
     cur = None
@@ -303,7 +295,6 @@ def fetch_all_students_with_grades():
         conn = connection_pool.getconn()
         cur = conn.cursor()
 
-        # LEFT JOIN to include students without grades
         cur.execute("""
             SELECT s.id, s.nome, n.nota1, n.nota2, n.media
             FROM students s
@@ -335,7 +326,6 @@ def fetch_all_students_with_grades():
             connection_pool.putconn(conn)
 
 def fetch_approved_students():
-    """Fetch only approved students (media >= 7.0)"""
     connection_pool = get_connection_pool()
     conn = None
     cur = None
@@ -344,7 +334,6 @@ def fetch_approved_students():
         conn = connection_pool.getconn()
         cur = conn.cursor()
 
-        # INNER JOIN to only get students with grades, filter by media >= 7.0
         cur.execute("""
             SELECT s.id, s.nome, n.nota1, n.nota2, n.media
             FROM students s
@@ -377,7 +366,6 @@ def fetch_approved_students():
             connection_pool.putconn(conn)
 
 def fetch_failed_students():
-    """Fetch only failed students (media < 7.0)"""
     connection_pool = get_connection_pool()
     conn = None
     cur = None
@@ -386,7 +374,6 @@ def fetch_failed_students():
         conn = connection_pool.getconn()
         cur = conn.cursor()
 
-        # INNER JOIN to only get students with grades, filter by media < 7.0
         cur.execute("""
             SELECT s.id, s.nome, n.nota1, n.nota2, n.media
             FROM students s

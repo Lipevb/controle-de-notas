@@ -18,14 +18,14 @@ def login(user, pwd, success_label):
         salt = user_data['addon']
         hashed_password = hash_password(pwd, salt)
         if hashed_password != password:
-            success_label.configure(text="Wrong username or password.")
+            success_label.configure(text="Usuário ou senha incorretos.")
             return False
-        success_label.configure(text="Login successful!")
+        success_label.configure(text="Login bem-sucedido!")
         return True
     elif usr == "Admin" and pwd == "Admin":
-        success_label.configure(text="Admin login successful!")
+        success_label.configure(text="Admin login bem-sucedido!")
         return True
     else:
-        success_label.configure(text="Wrong username or password.")
+        success_label.configure(text="Usuário ou senha incorretos.")
         return False
 

@@ -1,5 +1,3 @@
-
-
 def reset_form(user_var, pass_var):
     user_var.set("")
     pass_var.set("")
